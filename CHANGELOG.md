@@ -1,3 +1,6 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.1] - 06/04/2019
 
-* TODO: Describe initial release.
+* View and select emojis
+* 6 categories
+* Optionally add keywords to recommend emojis
+* Material design and Cupertino mode
