@@ -1,14 +1,58 @@
-# emoji_picker
+# Flutter Emoji Keyboard
 
-An Emoji Keyboard
+A Flutter package that provides an Emoji Keyboard widget.
 
-## Getting Started
+## Key Features
+* View and select 390 emojis
+* 6 categories
+* Optionally add keywords to recommend emojis
+* Material Design and Cupertino mode
 
-This project is a starting point for a Dart
-[package](https://flutter.io/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+## Usage
+To use this plugin, add `emoji_picker` as dependency in your pubspec.yaml file.
+
+## Sample Usage
+
+```
+import 'package:flutter/material.dart';
+import 'package:emoji_picker/emoji_picker.dart';
+
+void main() => runApp(MainApp());
+
+class MainApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Flutter Emoji Picker Example",
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Flutter Emoji Picker Example"),
+        ),
+        body: MainPage(),
+      ),
+    );
+  }
+}
+
+class MainPage extends StatefulWidget {
+  @override
+  MainPageState createState() => new MainPageState();
+}
+
+class MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    return EmojiPicker(
+      rows: 3,
+      columns: 7,
+      recommendKeywords: ["racing", "horse"],
+      numRecommended: 10,
+      onEmojiSelected: (emoji, category) {
+        print(emoji);
+      },
+    );
+  }
+}
+```
+See the `example` directory for the complete sample app.
