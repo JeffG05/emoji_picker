@@ -1,6 +1,6 @@
 # emoji_picker
 
-An Emoji Picker
+An Emoji Keyboard
 
 ## Getting Started
 
