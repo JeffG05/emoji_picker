@@ -10,7 +10,12 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: "Test",
       debugShowCheckedModeBanner: false,
-      home: MainPage(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Emoji Picker Test"),
+        ),
+        body: MainPage(),
+      ),
     );
   }
 
@@ -27,7 +32,19 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return EmojiPicker();
+
+
+    return EmojiPicker(
+      rows: 3,
+      columns: 7,
+      buttonMode: ButtonMode.MATERIAL,
+      recommendKeywords: ["racing", "horse"],
+      numRecommended: 10,
+      onEmojiSelected: (emoji, category) {
+        print(emoji);
+      },
+    );
+
   }
 
 }
