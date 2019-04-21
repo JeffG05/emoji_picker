@@ -1,5 +1,7 @@
 # Flutter Emoji Keyboard
 
+[![pub package](https://img.shields.io/pub/v/emoji_picker.svg)](https://pub.dartlang.org/packages/emoji_picker)
+
 A Flutter package that provides an Emoji Keyboard widget.
 
 ## Key Features
