@@ -1,16 +1,41 @@
-# emoji_picker_test
+```
+import 'package:flutter/material.dart';
+import 'package:emoji_picker/emoji_picker.dart';
 
-A new Flutter application.
+void main() => runApp(MainApp());
 
-## Getting Started
+class MainApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "Flutter Emoji Picker Example",
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Flutter Emoji Picker Example"),
+        ),
+        body: MainPage(),
+      ),
+    );
+  }
+}
 
-This project is a starting point for a Flutter application.
+class MainPage extends StatefulWidget {
+  @override
+  MainPageState createState() => new MainPageState();
+}
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+class MainPageState extends State<MainPage> {
+  @override
+  Widget build(BuildContext context) {
+    return EmojiPicker(
+      rows: 3,
+      columns: 7,
+      recommendKeywords: ["racing", "horse"],
+      numRecommended: 10,
+      onEmojiSelected: (emoji, category) {
+        print(emoji);
+      },
+    );
+  }
+}
+```

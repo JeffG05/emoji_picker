@@ -1,7 +1,6 @@
 name: emoji_picker
 description: A Flutter package that provides an Emoji Keyboard widget.
-version: 0.0.2
-author: Jeff Gugelmann <gugelmann.jeff@gmail.com>
+version: 0.0.3
 homepage: https://github.com/JeffG05/emoji_picker
 
 environment:
@@ -11,11 +10,13 @@ dependencies:
   flutter:
     sdk: flutter
 
-  device_info: ^0.4.0+1
+  shared_preferences: ^0.5.4+1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
-
+flutter:
+  plugin:
+    androidPackage: com.jeffg.emoji_picker
+    pluginClass: EmojiPickerPlugin

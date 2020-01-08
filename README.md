@@ -9,6 +9,7 @@ A Flutter package that provides an Emoji Keyboard widget.
 * 6 categories
 * Optionally add keywords to recommend emojis
 * Material Design and Cupertino mode
+* Emojis that cannot be displayed are filtered out (Android Only)
 
 
 ## Usage
