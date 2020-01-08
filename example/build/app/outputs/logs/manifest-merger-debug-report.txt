@@ -1,0 +1,162 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:1:1-29:12
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:1:1-29:12
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:1:1-29:12
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:1:1-29:12
+MERGED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:1:1-29:12
+MERGED from [:emoji_picker] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\emoji_picker\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences_web] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences_web\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences_macos] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences_macos\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.fragment:fragment:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\fragment-1.0.0-rc01.aar\c392b2aa6a770c5da66ffcfe3f001a47\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\legacy-support-core-ui-1.0.0-rc01.aar\a444b72fcc886014b9d7253656ed44a9\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\legacy-support-core-utils-1.0.0-rc01.aar\6392b8a498613962634117b9495fe6a5\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\loader-1.0.0-rc01.aar\6472ea94bc29ca93bdd7a0e97dc6dd88\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\viewpager-1.0.0-rc01.aar\f3c0b70e6e8d0185a9bbc49d3881e205\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\coordinatorlayout-1.0.0-rc01.aar\72d7a3c87b4b58ff456e6761da46e7e2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\drawerlayout-1.0.0-rc01.aar\faa9a14afc3c4ed58c8b2b9962194fab\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\slidingpanelayout-1.0.0-rc01.aar\be4a86ac4ba95b45dc4f34c3316956f1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\customview-1.0.0-rc01.aar\ba63b07ae11dd9a1a5fb83c76a921976\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\swiperefreshlayout-1.0.0-rc01.aar\eb30cb98145816ed1ed7f655a51ae1e4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\asynclayoutinflater-1.0.0-rc01.aar\437d28b288d7d9b6433c100887884522\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-1.0.0-rc01.aar\1d13f1a03068f8ac9e371d88c68f624f\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-runtime-2.0.0-rc01.aar\410545824550f5a799f9f788adb86cc4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-livedata-core-2.0.0-rc01.aar\f01a94e03557bd7a9c73e2c579ced6e4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-runtime-2.0.0-rc01.aar\aef576b68c9d355aba0c057a6c741bb1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\versionedparcelable-1.0.0-rc01.aar\cef3ce38f5747d8516b8492b096e126e\AndroidManifest.xml:17:1-25:12
+MERGED from [androidx.interpolator:interpolator:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\interpolator-1.0.0-rc01.aar\9b1214bbb2cf505aaa6baea4ab491a0c\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\cursoradapter-1.0.0-rc01.aar\f90fd5fda2d33f74a32f48d8b68859e9\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\documentfile-1.0.0-rc01.aar\5c8fc9cc3543495f86e86bce3d9a00a5\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\localbroadcastmanager-1.0.0-rc01.aar\f6b8da4adf407c799757a64a3f59dcd4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\print-1.0.0-rc01.aar\cb7fa12f740d37c0e57e3ece6f263e94\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-viewmodel-2.0.0-rc01.aar\387f3c07a3ccdec739415d3421aa53c3\AndroidManifest.xml:17:1-22:12
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+	package
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:2:5-42
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:1:1-29:12
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:1:1-29:12
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:1:11-69
+application
+ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:9:5-28:19
+MERGED from [androidx.core:core:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-1.0.0-rc01.aar\1d13f1a03068f8ac9e371d88c68f624f\AndroidManifest.xml:22:5-89
+MERGED from [androidx.core:core:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-1.0.0-rc01.aar\1d13f1a03068f8ac9e371d88c68f624f\AndroidManifest.xml:22:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\versionedparcelable-1.0.0-rc01.aar\cef3ce38f5747d8516b8492b096e126e\AndroidManifest.xml:22:5-23:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\versionedparcelable-1.0.0-rc01.aar\cef3ce38f5747d8516b8492b096e126e\AndroidManifest.xml:22:5-23:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-1.0.0-rc01.aar\1d13f1a03068f8ac9e371d88c68f624f\AndroidManifest.xml:22:18-86
+	android:label
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:11:9-42
+	android:icon
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:12:9-43
+	android:name
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:10:9-57
+activity#com.jeffg.emoji_picker_test.MainActivity
+ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:13:9-24:20
+	android:launchMode
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:15:13-43
+	android:hardwareAccelerated
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:18:13-47
+	android:windowSoftInputMode
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:19:13-55
+	android:configChanges
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:17:13-144
+	android:theme
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:16:13-47
+	android:name
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:14:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:20:13-23:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:21:17-68
+	android:name
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:21:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:22:17-76
+	android:name
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:22:27-74
+meta-data#flutterEmbedding
+ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:25:9-27:33
+	android:value
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:27:13-30
+	android:name
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml:26:13-44
+uses-sdk
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml
+MERGED from [:emoji_picker] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\emoji_picker\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:5:5-44
+MERGED from [:emoji_picker] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\emoji_picker\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_web] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences_web\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_web] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences_web\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_macos] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences_macos\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences_macos] C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\build\shared_preferences_macos\intermediates\merged_manifests\debug\processDebugManifest\merged\AndroidManifest.xml:5:5-44
+MERGED from [androidx.fragment:fragment:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\fragment-1.0.0-rc01.aar\c392b2aa6a770c5da66ffcfe3f001a47\AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\fragment-1.0.0-rc01.aar\c392b2aa6a770c5da66ffcfe3f001a47\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\legacy-support-core-ui-1.0.0-rc01.aar\a444b72fcc886014b9d7253656ed44a9\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\legacy-support-core-ui-1.0.0-rc01.aar\a444b72fcc886014b9d7253656ed44a9\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\legacy-support-core-utils-1.0.0-rc01.aar\6392b8a498613962634117b9495fe6a5\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\legacy-support-core-utils-1.0.0-rc01.aar\6392b8a498613962634117b9495fe6a5\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\loader-1.0.0-rc01.aar\6472ea94bc29ca93bdd7a0e97dc6dd88\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\loader-1.0.0-rc01.aar\6472ea94bc29ca93bdd7a0e97dc6dd88\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\viewpager-1.0.0-rc01.aar\f3c0b70e6e8d0185a9bbc49d3881e205\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\viewpager-1.0.0-rc01.aar\f3c0b70e6e8d0185a9bbc49d3881e205\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\coordinatorlayout-1.0.0-rc01.aar\72d7a3c87b4b58ff456e6761da46e7e2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\coordinatorlayout-1.0.0-rc01.aar\72d7a3c87b4b58ff456e6761da46e7e2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\drawerlayout-1.0.0-rc01.aar\faa9a14afc3c4ed58c8b2b9962194fab\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\drawerlayout-1.0.0-rc01.aar\faa9a14afc3c4ed58c8b2b9962194fab\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\slidingpanelayout-1.0.0-rc01.aar\be4a86ac4ba95b45dc4f34c3316956f1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\slidingpanelayout-1.0.0-rc01.aar\be4a86ac4ba95b45dc4f34c3316956f1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\customview-1.0.0-rc01.aar\ba63b07ae11dd9a1a5fb83c76a921976\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\customview-1.0.0-rc01.aar\ba63b07ae11dd9a1a5fb83c76a921976\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\swiperefreshlayout-1.0.0-rc01.aar\eb30cb98145816ed1ed7f655a51ae1e4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\swiperefreshlayout-1.0.0-rc01.aar\eb30cb98145816ed1ed7f655a51ae1e4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\asynclayoutinflater-1.0.0-rc01.aar\437d28b288d7d9b6433c100887884522\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\asynclayoutinflater-1.0.0-rc01.aar\437d28b288d7d9b6433c100887884522\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-1.0.0-rc01.aar\1d13f1a03068f8ac9e371d88c68f624f\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-1.0.0-rc01.aar\1d13f1a03068f8ac9e371d88c68f624f\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-runtime-2.0.0-rc01.aar\410545824550f5a799f9f788adb86cc4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-runtime-2.0.0-rc01.aar\410545824550f5a799f9f788adb86cc4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-livedata-core-2.0.0-rc01.aar\f01a94e03557bd7a9c73e2c579ced6e4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-livedata-core-2.0.0-rc01.aar\f01a94e03557bd7a9c73e2c579ced6e4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-runtime-2.0.0-rc01.aar\aef576b68c9d355aba0c057a6c741bb1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\core-runtime-2.0.0-rc01.aar\aef576b68c9d355aba0c057a6c741bb1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\versionedparcelable-1.0.0-rc01.aar\cef3ce38f5747d8516b8492b096e126e\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\versionedparcelable-1.0.0-rc01.aar\cef3ce38f5747d8516b8492b096e126e\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\interpolator-1.0.0-rc01.aar\9b1214bbb2cf505aaa6baea4ab491a0c\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\interpolator-1.0.0-rc01.aar\9b1214bbb2cf505aaa6baea4ab491a0c\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\cursoradapter-1.0.0-rc01.aar\f90fd5fda2d33f74a32f48d8b68859e9\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\cursoradapter-1.0.0-rc01.aar\f90fd5fda2d33f74a32f48d8b68859e9\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\documentfile-1.0.0-rc01.aar\5c8fc9cc3543495f86e86bce3d9a00a5\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\documentfile-1.0.0-rc01.aar\5c8fc9cc3543495f86e86bce3d9a00a5\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\localbroadcastmanager-1.0.0-rc01.aar\f6b8da4adf407c799757a64a3f59dcd4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\localbroadcastmanager-1.0.0-rc01.aar\f6b8da4adf407c799757a64a3f59dcd4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\print-1.0.0-rc01.aar\cb7fa12f740d37c0e57e3ece6f263e94\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\print-1.0.0-rc01.aar\cb7fa12f740d37c0e57e3ece6f263e94\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-viewmodel-2.0.0-rc01.aar\387f3c07a3ccdec739415d3421aa53c3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0-rc01] C:\Users\jeffg\.gradle\caches\transforms-1\files-1.1\lifecycle-viewmodel-2.0.0-rc01.aar\387f3c07a3ccdec739415d3421aa53c3\AndroidManifest.xml:20:5-44
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml
+INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml:6:5-66
+	android:name
+		ADDED from C:\Users\jeffg\AndroidStudioProjects\emoji_picker\example\android\app\src\debug\AndroidManifest.xml:6:22-64

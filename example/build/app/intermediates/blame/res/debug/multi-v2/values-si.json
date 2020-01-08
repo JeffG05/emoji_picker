@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\jeffg\\AndroidStudioProjects\\emoji_picker\\example\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-si\\values-si.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\jeffg\\.gradle\\caches\\transforms-1\\files-1.1\\core-1.0.0-rc01.aar\\1d13f1a03068f8ac9e371d88c68f624f\\res\\values-si\\values-si.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}
