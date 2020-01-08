@@ -4,6 +4,13 @@
 .packages
 .pub/
 
+.idea/
+.vscode/
+.gitignore
+.metadata
+emoji_picker.iml
+pubspec.lock
+
 build/
 ios/.generated/
 ios/Flutter/Generated.xcconfig
