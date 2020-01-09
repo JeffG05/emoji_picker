@@ -1,3 +1,7 @@
+## [0.1.0] = 08/01/2020
+* Added documentation
+
+
 ## [0.0.3] - 08/01/2020
 
 * Keyboard now removes emojis that aren't displayed correctly

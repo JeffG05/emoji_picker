@@ -1,3 +1,4 @@
+/// Map of all possible emojis along with their names in [Category.SMILEYS]
 final Map<String, String> smileys = new Map.fromIterables([
   'Grinning Face',
   'Grinning Face With Big Eyes',
@@ -722,6 +723,7 @@ final Map<String, String> smileys = new Map.fromIterables([
   '💼'
 ]);
 
+/// Map of all possible emojis along with their names in [Category.ANIMALS]
 final Map<String, String> animals = new Map.fromIterables([
   'See-No-Evil Monkey',
   'Hear-No-Evil Monkey',
@@ -1088,6 +1090,7 @@ final Map<String, String> animals = new Map.fromIterables([
   '🎍'
 ]);
 
+/// Map of all possible emojis along with their names in [Category.FOODS]
 final Map<String, String> foods = new Map.fromIterables([
   'Grapes',
   'Melon',
@@ -1302,6 +1305,7 @@ final Map<String, String> foods = new Map.fromIterables([
   '🥄'
 ]);
 
+/// Map of all possible emojis along with their names in [Category.TRAVEL]
 final Map<String, String> travel = new Map.fromIterables([
   'Person Rowing Boat',
   'Map of Japan',
@@ -1556,6 +1560,7 @@ final Map<String, String> travel = new Map.fromIterables([
   '🛅'
 ]);
 
+/// Map of all possible emojis along with their names in [Category.ACTIVITIES]
 final Map<String, String> activities = new Map.fromIterables([
   'Man in Suit Levitating',
   'Man Climbing',
@@ -1744,6 +1749,7 @@ final Map<String, String> activities = new Map.fromIterables([
   '🏹'
 ]);
 
+/// Map of all possible emojis along with their names in [Category.OBJECTS]
 final Map<String, String> objects = new Map.fromIterables([
   'Love Letter',
   'Hole',
@@ -2144,6 +2150,7 @@ final Map<String, String> objects = new Map.fromIterables([
   '🚰'
 ]);
 
+/// Map of all possible emojis along with their names in [Category.SYMBOLS]
 final Map<String, String> symbols = new Map.fromIterables([
   'Heart With Arrow',
   'Heart With Ribbon',
@@ -2665,6 +2672,8 @@ final Map<String, String> symbols = new Map.fromIterables([
   '🔳',
   '🔲'
 ]);
+
+/// Map of all possible emojis along with their names in [Category.FLAGS]
 final Map<String, String> flags = new Map.fromIterables([
   'Chequered Flag',
   'Triangular Flag',

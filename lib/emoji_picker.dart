@@ -10,6 +10,10 @@ import 'emoji_lists.dart' as emojiList;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// All the possible categories that [Emoji] can be put into
+///
+/// All [Category] are shown in the keyboard bottombar with the exception of [Category.RECOMMENDED]
+/// which only displays when keywords are given
 enum Category {
   RECOMMENDED,
   RECENT,
@@ -23,40 +27,74 @@ enum Category {
   FLAGS
 }
 
-enum ButtonMode { MATERIAL, CUPERTINO }
+/// Enum to alter the keyboard button style
+enum ButtonMode {
+  /// Android button style - gives the button a splash color with ripple effect
+  MATERIAL,
 
+  /// iOS button style - gives the button a fade out effect when pressed
+  CUPERTINO
+}
+
+/// Callback function for when emoji is selected
+///
+/// The function returns the selected [Emoji] as well as the [Category] from which it originated
 typedef void OnEmojiSelected(Emoji emoji, Category category);
 
+/// The Emoji Keyboard widget
+///
+/// This widget displays a grid of [Emoji] sorted by [Category] which the user can horizontally scroll through.
+///
+/// There is also a bottombar which displays all the possible [Category] and allow the user to quickly switch to that [Category]
 class EmojiPicker extends StatefulWidget {
   @override
   _EmojiPickerState createState() => new _EmojiPickerState();
 
+  /// Number of columns in keyboard grid
   int columns;
+
+  /// Number of rows in keyboard grid
   int rows;
 
+  /// The currently selected [Category]
+  ///
+  /// This [Category] will have its button in the bottombar darkened
   Category selectedCategory;
 
+  /// The function called when the emoji is selected
   OnEmojiSelected onEmojiSelected;
 
+  /// The background color of the keyboard
   Color bgColor;
+
+  /// The color of the keyboard page indicator
   Color indicatorColor;
 
   Color _defaultBgColor = Color.fromRGBO(242, 242, 242, 1);
 
+  /// A list of keywords that are used to provide the user with recommended emojis in [Category.RECOMMENDED]
   List<String> recommendKeywords;
+
+  /// The maximum number of emojis to be recommended
   int numRecommended;
 
+  /// The string to be displayed if no recommendations found
   String noRecommendationsText;
+
+  /// The text style for the [noRecommendationsText]
   TextStyle noRecommendationsStyle;
 
+  /// The string to be displayed if no recent emojis to display
   String noRecentsText;
+
+  /// The text style for the [noRecentsText]
   TextStyle noRecentsStyle;
 
+  /// Determines the icon to display for each [Category]
   CategoryIcons categoryIcons;
 
+  /// Determines the style given to the keyboard keys
   ButtonMode buttonMode;
-
-  //Icon unavailableEmojiIcon;
 
   EmojiPicker({
     Key key,
@@ -102,13 +140,6 @@ class EmojiPicker extends StatefulWidget {
     if (categoryIcons == null) {
       categoryIcons = CategoryIcons();
     }
-    // if (unavailableEmojiIcon == null) {
-    //   unavailableEmojiIcon = Icon(
-    //     Icons.error_outline,
-    //     size: 24,
-    //     color: Color.fromRGBO(211, 211, 211, 1),
-    //   );
-    // }
   }
 }
 
@@ -127,9 +158,15 @@ class _Recommended {
       this.numSplitPartialKeyword = 0});
 }
 
+/// Class that defines the icon representing a [Category]
 class CategoryIcon {
+  /// The icon to represent the category
   IconData icon;
+
+  /// The default color of the icon
   Color color;
+
+  /// The color of the icon once the category is selected
   Color selectedColor;
 
   CategoryIcon({@required this.icon, this.color, this.selectedColor}) {
@@ -142,16 +179,39 @@ class CategoryIcon {
   }
 }
 
+/// Class used to define all the [CategoryIcon] shown for each [Category]
+///
+/// This allows the keyboard to be personalized by changing icons shown.
+/// If a [CategoryIcon] is set as null or not defined during initialization, the default icons will be used instead
 class CategoryIcons {
+  /// Icon for [Category.RECOMMENDED]
   CategoryIcon recommendationIcon;
+
+  /// Icon for [Category.RECENT]
   CategoryIcon recentIcon;
+
+  /// Icon for [Category.SMILEYS]
   CategoryIcon smileyIcon;
+
+  /// Icon for [Category.ANIMALS]
   CategoryIcon animalIcon;
+
+  /// Icon for [Category.FOODS]
   CategoryIcon foodIcon;
+
+  /// Icon for [Category.TRAVEL]
   CategoryIcon travelIcon;
+
+  /// Icon for [Category.ACTIVITIES]
   CategoryIcon activityIcon;
+
+  /// Icon for [Category.OBJECTS]
   CategoryIcon objectIcon;
+
+  /// Icon for [Category.SYMBOLS]
   CategoryIcon symbolIcon;
+
+  /// Icon for [Category.FLAGS]
   CategoryIcon flagIcon;
 
   CategoryIcons(
@@ -198,8 +258,14 @@ class CategoryIcons {
   }
 }
 
+/// A class to store data for each individual emoji
 class Emoji {
+  /// The name or description for this emoji
   final String name;
+
+  /// The unicode string for this emoji
+  ///
+  /// This is the string that should be displayed to view the emoji
   final String emoji;
 
   Emoji({@required this.name, @required this.emoji});
