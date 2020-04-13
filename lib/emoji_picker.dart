@@ -1,5 +1,6 @@
 library emoji_picker;
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -329,6 +330,22 @@ class _EmojiPickerState extends State<EmojiPicker> {
     }
   }
 
+  Future<Map<String, String>> _getFiltered(Map<String, String> emoji) async {
+    if (Platform.isAndroid) {
+      Map<String, String> filtered;
+      try {
+        var temp =
+            await platform.invokeMethod("checkAvailability", {'emoji': emoji});
+        filtered = Map<String, String>.from(temp);
+      } on PlatformException catch (_) {
+        filtered = null;
+      }
+      return filtered;
+    } else {
+      return emoji;
+    }
+  }
+
   Future<List<String>> getRecentEmojis() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final key = "recents";
@@ -348,29 +365,52 @@ class _EmojiPickerState extends State<EmojiPicker> {
     });
   }
 
-  Future<Map<String, String>> getAvailableEmojis(
-      Map<String, String> map) async {
-    Map<String, String> newMap = Map<String, String>();
+  Future<Map<String, String>> getAvailableEmojis(Map<String, String> map,
+      {@required String title}) async {
+    Map<String, String> newMap;
 
-    for (String key in map.keys) {
-      bool isAvailable = await _isEmojiAvailable(map[key]);
-      if (isAvailable) {
-        newMap[key] = map[key];
-      }
+    newMap = await restoreFilteredEmojis(title);
+
+    if (newMap != null) {
+      return newMap;
     }
+
+    newMap = await _getFiltered(map);
+
+    await cacheFilteredEmojis(title, newMap);
 
     return newMap;
   }
 
+  Future<void> cacheFilteredEmojis(
+      String title, Map<String, String> emojis) async {
+    final prefs = await SharedPreferences.getInstance();
+    String emojiJson = jsonEncode(emojis);
+    prefs.setString(title, emojiJson);
+    return;
+  }
+
+  Future<Map<String, String>> restoreFilteredEmojis(String title) async {
+    final prefs = await SharedPreferences.getInstance();
+    String emojiJson = prefs.getString(title);
+    if (emojiJson == null) {
+      return null;
+    }
+    Map<String, String> emojis =
+        Map<String, String>.from(jsonDecode(emojiJson));
+    return emojis;
+  }
+
   Future updateEmojis() async {
-    smileyMap = await getAvailableEmojis(emojiList.smileys);
-    animalMap = await getAvailableEmojis(emojiList.animals);
-    foodMap = await getAvailableEmojis(emojiList.foods);
-    travelMap = await getAvailableEmojis(emojiList.travel);
-    activityMap = await getAvailableEmojis(emojiList.activities);
-    objectMap = await getAvailableEmojis(emojiList.objects);
-    symbolMap = await getAvailableEmojis(emojiList.symbols);
-    flagMap = await getAvailableEmojis(emojiList.flags);
+    smileyMap = await getAvailableEmojis(emojiList.smileys, title: 'smileys');
+    animalMap = await getAvailableEmojis(emojiList.animals, title: 'animals');
+    foodMap = await getAvailableEmojis(emojiList.foods, title: 'foods');
+    travelMap = await getAvailableEmojis(emojiList.travel, title: 'travel');
+    activityMap =
+        await getAvailableEmojis(emojiList.activities, title: 'activities');
+    objectMap = await getAvailableEmojis(emojiList.objects, title: 'objects');
+    symbolMap = await getAvailableEmojis(emojiList.symbols, title: 'symbols');
+    flagMap = await getAvailableEmojis(emojiList.flags, title: 'flags');
 
     allNames.addAll(smileyMap.keys);
     allNames.addAll(animalMap.keys);
