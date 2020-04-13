@@ -1,6 +1,8 @@
 package com.jeffg.emoji_picker;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.PaintCompat;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -42,7 +44,7 @@ public class EmojiPickerPlugin implements FlutterPlugin, MethodCallHandler {
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("isAvailable")) {
       Paint paint = new Paint();
-      result.success(paint.hasGlyph(call.argument("emoji").toString()));
+      result.success(PaintCompat.hasGlyph(paint, call.argument("emoji").toString()));
     } else {
       result.notImplemented();
     }
