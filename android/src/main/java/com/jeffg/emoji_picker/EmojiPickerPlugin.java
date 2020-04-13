@@ -1,7 +1,6 @@
 package com.jeffg.emoji_picker;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.PaintCompat;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
@@ -11,6 +10,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import android.graphics.Paint;
+import androidx.core.graphics.PaintCompat;
 
 /** EmojiPickerPlugin */
 public class EmojiPickerPlugin implements FlutterPlugin, MethodCallHandler {
