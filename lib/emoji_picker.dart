@@ -70,6 +70,8 @@ class EmojiPicker extends StatefulWidget {
   /// The color of the keyboard page indicator
   Color indicatorColor;
 
+  Color progressIndicatorColor;
+
   Color _defaultBgColor = Color.fromRGBO(242, 242, 242, 1);
 
   /// A list of keywords that are used to provide the user with recommended emojis in [Category.RECOMMENDED]
@@ -104,6 +106,7 @@ class EmojiPicker extends StatefulWidget {
     this.selectedCategory,
     this.bgColor,
     this.indicatorColor = Colors.blue,
+    this.progressIndicatorColor = Colors.blue,
     this.recommendKeywords,
     this.numRecommended = 10,
     this.noRecommendationsText = "No Recommendations",
@@ -2181,7 +2184,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
             child: Container(
               color: widget.bgColor,
               child: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(widget.progressIndicatorColor),
+                ),
               ),
             ),
           ),
