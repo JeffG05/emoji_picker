@@ -14,18 +14,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// All [Category] are shown in the keyboard bottombar with the exception of [Category.RECOMMENDED]
 /// which only displays when keywords are given
-enum Category {
-  RECOMMENDED,
-  RECENT,
-  SMILEYS,
-  ANIMALS,
-  FOODS,
-  TRAVEL,
-  ACTIVITIES,
-  OBJECTS,
-  SYMBOLS,
-  FLAGS
-}
+/// todo: provider emoji list
+/// todo: height with layoutbuilder
+/// todo: refactor dynamic items/ categoris
+enum Category { RECOMMENDED, RECENT, SMILEYS, ANIMALS, FOODS, TRAVEL, ACTIVITIES, OBJECTS, SYMBOLS, FLAGS }
 
 /// Enum to alter the keyboard button style
 enum ButtonMode {
@@ -120,8 +112,7 @@ class EmojiPicker extends StatefulWidget {
       } else {
         selectedCategory = Category.RECOMMENDED;
       }
-    } else if (recommendKeywords == null &&
-        selectedCategory == Category.RECOMMENDED) {
+    } else if (recommendKeywords == null && selectedCategory == Category.RECOMMENDED) {
       selectedCategory = Category.SMILEYS;
     }
 
@@ -150,12 +141,7 @@ class _Recommended {
   final int numSplitEqualKeyword;
   final int numSplitPartialKeyword;
 
-  _Recommended(
-      {this.name,
-      this.emoji,
-      this.tier,
-      this.numSplitEqualKeyword = 0,
-      this.numSplitPartialKeyword = 0});
+  _Recommended({this.name, this.emoji, this.tier, this.numSplitEqualKeyword = 0, this.numSplitPartialKeyword = 0});
 }
 
 /// Class that defines the icon representing a [Category]
@@ -318,8 +304,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
     if (Platform.isAndroid) {
       bool isAvailable;
       try {
-        isAvailable =
-            await platform.invokeMethod("isAvailable", {"emoji": emoji});
+        isAvailable = await platform.invokeMethod("isAvailable", {"emoji": emoji});
       } on PlatformException catch (_) {
         isAvailable = false;
       }
@@ -348,8 +333,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
     });
   }
 
-  Future<Map<String, String>> getAvailableEmojis(
-      Map<String, String> map) async {
+  Future<Map<String, String>> getAvailableEmojis(Map<String, String> map) async {
     Map<String, String> newMap = Map<String, String>();
 
     for (String key in map.keys) {
@@ -401,19 +385,14 @@ class _EmojiPickerState extends State<EmojiPicker> {
 
         widget.recommendKeywords.forEach((keyword) {
           if (name.toLowerCase() == keyword.toLowerCase()) {
-            recommendedEmojis.add(_Recommended(
-                name: name, emoji: allEmojis[allNames.indexOf(name)], tier: 1));
+            recommendedEmojis.add(_Recommended(name: name, emoji: allEmojis[allNames.indexOf(name)], tier: 1));
           } else {
             List<String> splitName = name.split(" ");
 
             splitName.forEach((splitName) {
-              if (splitName.replaceAll(":", "").toLowerCase() ==
-                  keyword.toLowerCase()) {
+              if (splitName.replaceAll(":", "").toLowerCase() == keyword.toLowerCase()) {
                 numSplitEqualKeyword += 1;
-              } else if (splitName
-                  .replaceAll(":", "")
-                  .toLowerCase()
-                  .contains(keyword.toLowerCase())) {
+              } else if (splitName.replaceAll(":", "").toLowerCase().contains(keyword.toLowerCase())) {
                 numSplitPartialKeyword += 1;
               }
             });
@@ -422,8 +401,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
 
         if (numSplitEqualKeyword > 0) {
           if (numSplitEqualKeyword == name.split(" ").length) {
-            recommendedEmojis.add(_Recommended(
-                name: name, emoji: allEmojis[allNames.indexOf(name)], tier: 1));
+            recommendedEmojis.add(_Recommended(name: name, emoji: allEmojis[allNames.indexOf(name)], tier: 1));
           } else {
             recommendedEmojis.add(_Recommended(
                 name: name,
@@ -468,8 +446,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
               } else {
                 if (a.name.split(" ").length < b.name.split(" ").length) {
                   return -1;
-                } else if (a.name.split(" ").length >
-                    b.name.split(" ").length) {
+                } else if (a.name.split(" ").length > b.name.split(" ").length) {
                   return 1;
                 } else {
                   return 0;
@@ -491,13 +468,11 @@ class _EmojiPickerState extends State<EmojiPicker> {
       });
 
       if (recommendedEmojis.length > widget.numRecommended) {
-        recommendedEmojis =
-            recommendedEmojis.getRange(0, widget.numRecommended).toList();
+        recommendedEmojis = recommendedEmojis.getRange(0, widget.numRecommended).toList();
       }
 
       if (recommendedEmojis.length != 0) {
-        recommendedPagesNum =
-            (recommendedEmojis.length / (widget.rows * widget.columns)).ceil();
+        recommendedPagesNum = (recommendedEmojis.length / (widget.rows * widget.columns)).ceil();
 
         for (var i = 0; i < recommendedPagesNum; i++) {
           recommendedPages.add(Container(
@@ -507,8 +482,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
               primary: true,
               crossAxisCount: widget.columns,
               children: List.generate(widget.rows * widget.columns, (index) {
-                if (index + (widget.columns * widget.rows * i) <
-                    recommendedEmojis.length) {
+                if (index + (widget.columns * widget.rows * i) < recommendedEmojis.length) {
                   switch (widget.buttonMode) {
                     case ButtonMode.MATERIAL:
                       return Center(
@@ -516,23 +490,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                         padding: EdgeInsets.all(0),
                         child: Center(
                           child: Text(
-                            recommendedEmojis[
-                                    index + (widget.columns * widget.rows * i)]
-                                .emoji,
+                            recommendedEmojis[index + (widget.columns * widget.rows * i)].emoji,
                             style: TextStyle(fontSize: 24),
                           ),
                         ),
                         onPressed: () {
-                          _Recommended recommended = recommendedEmojis[
-                              index + (widget.columns * widget.rows * i)];
+                          _Recommended recommended = recommendedEmojis[index + (widget.columns * widget.rows * i)];
                           widget.onEmojiSelected(
-                              Emoji(
-                                  name: recommended.name,
-                                  emoji: recommended.emoji),
-                              widget.selectedCategory);
-                          addRecentEmoji(Emoji(
-                              name: recommended.name,
-                              emoji: recommended.emoji));
+                              Emoji(name: recommended.name, emoji: recommended.emoji), widget.selectedCategory);
+                          addRecentEmoji(Emoji(name: recommended.name, emoji: recommended.emoji));
                         },
                       ));
                       break;
@@ -543,23 +509,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                         padding: EdgeInsets.all(0),
                         child: Center(
                           child: Text(
-                            recommendedEmojis[
-                                    index + (widget.columns * widget.rows * i)]
-                                .emoji,
+                            recommendedEmojis[index + (widget.columns * widget.rows * i)].emoji,
                             style: TextStyle(fontSize: 24),
                           ),
                         ),
                         onPressed: () {
-                          _Recommended recommended = recommendedEmojis[
-                              index + (widget.columns * widget.rows * i)];
+                          _Recommended recommended = recommendedEmojis[index + (widget.columns * widget.rows * i)];
                           widget.onEmojiSelected(
-                              Emoji(
-                                  name: recommended.name,
-                                  emoji: recommended.emoji),
-                              widget.selectedCategory);
-                          addRecentEmoji(Emoji(
-                              name: recommended.name,
-                              emoji: recommended.emoji));
+                              Emoji(name: recommended.name, emoji: recommended.emoji), widget.selectedCategory);
+                          addRecentEmoji(Emoji(name: recommended.name, emoji: recommended.emoji));
                         },
                       ));
 
@@ -592,9 +550,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
     recentPagesNum = 1;
     recentPages.add(recentPage());
 
-    smileyPagesNum =
-        (smileyMap.values.toList().length / (widget.rows * widget.columns))
-            .ceil();
+    smileyPagesNum = (smileyMap.values.toList().length / (widget.rows * widget.columns)).ceil();
 
     List<Widget> smileyPages = new List();
 
@@ -602,14 +558,13 @@ class _EmojiPickerState extends State<EmojiPicker> {
       smileyPages.add(Container(
         color: widget.bgColor,
         child: GridView.count(
+          childAspectRatio: 1.3,
           shrinkWrap: true,
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) <
-                smileyMap.values.toList().length) {
-              String emojiTxt = smileyMap.values
-                  .toList()[index + (widget.columns * widget.rows * i)];
+            if (index + (widget.columns * widget.rows * i) < smileyMap.values.toList().length) {
+              String emojiTxt = smileyMap.values.toList()[index + (widget.columns * widget.rows * i)];
 
               switch (widget.buttonMode) {
                 case ButtonMode.MATERIAL:
@@ -625,10 +580,8 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: smileyMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: smileyMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: smileyMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: smileyMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -647,10 +600,8 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: smileyMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: smileyMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: smileyMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: smileyMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -666,9 +617,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
       ));
     }
 
-    animalPagesNum =
-        (animalMap.values.toList().length / (widget.rows * widget.columns))
-            .ceil();
+    animalPagesNum = (animalMap.values.toList().length / (widget.rows * widget.columns)).ceil();
 
     List<Widget> animalPages = new List();
 
@@ -680,8 +629,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) <
-                animalMap.values.toList().length) {
+            if (index + (widget.columns * widget.rows * i) < animalMap.values.toList().length) {
               switch (widget.buttonMode) {
                 case ButtonMode.MATERIAL:
                   return Center(
@@ -689,18 +637,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        animalMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        animalMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: animalMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: animalMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: animalMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: animalMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -712,18 +657,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        animalMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        animalMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: animalMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: animalMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: animalMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: animalMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -740,9 +682,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
       ));
     }
 
-    foodPagesNum =
-        (foodMap.values.toList().length / (widget.rows * widget.columns))
-            .ceil();
+    foodPagesNum = (foodMap.values.toList().length / (widget.rows * widget.columns)).ceil();
 
     List<Widget> foodPages = new List();
 
@@ -754,8 +694,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) <
-                foodMap.values.toList().length) {
+            if (index + (widget.columns * widget.rows * i) < foodMap.values.toList().length) {
               switch (widget.buttonMode) {
                 case ButtonMode.MATERIAL:
                   return Center(
@@ -763,18 +702,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        foodMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        foodMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: foodMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: foodMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: foodMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: foodMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -786,18 +722,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        foodMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        foodMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: foodMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: foodMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: foodMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: foodMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -814,9 +747,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
       ));
     }
 
-    travelPagesNum =
-        (travelMap.values.toList().length / (widget.rows * widget.columns))
-            .ceil();
+    travelPagesNum = (travelMap.values.toList().length / (widget.rows * widget.columns)).ceil();
 
     List<Widget> travelPages = new List();
 
@@ -828,8 +759,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) <
-                travelMap.values.toList().length) {
+            if (index + (widget.columns * widget.rows * i) < travelMap.values.toList().length) {
               switch (widget.buttonMode) {
                 case ButtonMode.MATERIAL:
                   return Center(
@@ -837,18 +767,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        travelMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        travelMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: travelMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: travelMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: travelMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: travelMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -860,18 +787,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        travelMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        travelMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: travelMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: travelMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: travelMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: travelMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -888,9 +812,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
       ));
     }
 
-    activityPagesNum =
-        (activityMap.values.toList().length / (widget.rows * widget.columns))
-            .ceil();
+    activityPagesNum = (activityMap.values.toList().length / (widget.rows * widget.columns)).ceil();
 
     List<Widget> activityPages = new List();
 
@@ -902,10 +824,8 @@ class _EmojiPickerState extends State<EmojiPicker> {
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) <
-                activityMap.values.toList().length) {
-              String emojiTxt = activityMap.values
-                  .toList()[index + (widget.columns * widget.rows * i)];
+            if (index + (widget.columns * widget.rows * i) < activityMap.values.toList().length) {
+              String emojiTxt = activityMap.values.toList()[index + (widget.columns * widget.rows * i)];
 
               switch (widget.buttonMode) {
                 case ButtonMode.MATERIAL:
@@ -914,18 +834,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        activityMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        activityMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: activityMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: activityMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: activityMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: activityMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -944,10 +861,8 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: activityMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: activityMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: activityMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: activityMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -964,9 +879,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
       ));
     }
 
-    objectPagesNum =
-        (objectMap.values.toList().length / (widget.rows * widget.columns))
-            .ceil();
+    objectPagesNum = (objectMap.values.toList().length / (widget.rows * widget.columns)).ceil();
 
     List<Widget> objectPages = new List();
 
@@ -978,8 +891,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) <
-                objectMap.values.toList().length) {
+            if (index + (widget.columns * widget.rows * i) < objectMap.values.toList().length) {
               switch (widget.buttonMode) {
                 case ButtonMode.MATERIAL:
                   return Center(
@@ -987,18 +899,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        objectMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        objectMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: objectMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: objectMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: objectMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: objectMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -1010,18 +919,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        objectMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        objectMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: objectMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: objectMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: objectMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: objectMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -1038,9 +944,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
       ));
     }
 
-    symbolPagesNum =
-        (symbolMap.values.toList().length / (widget.rows * widget.columns))
-            .ceil();
+    symbolPagesNum = (symbolMap.values.toList().length / (widget.rows * widget.columns)).ceil();
 
     List<Widget> symbolPages = new List();
 
@@ -1052,8 +956,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) <
-                symbolMap.values.toList().length) {
+            if (index + (widget.columns * widget.rows * i) < symbolMap.values.toList().length) {
               switch (widget.buttonMode) {
                 case ButtonMode.MATERIAL:
                   return Center(
@@ -1061,18 +964,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        symbolMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        symbolMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: symbolMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: symbolMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: symbolMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: symbolMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -1084,18 +984,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        symbolMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        symbolMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: symbolMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: symbolMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: symbolMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: symbolMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -1112,9 +1009,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
       ));
     }
 
-    flagPagesNum =
-        (flagMap.values.toList().length / (widget.rows * widget.columns))
-            .ceil();
+    flagPagesNum = (flagMap.values.toList().length / (widget.rows * widget.columns)).ceil();
 
     List<Widget> flagPages = new List();
 
@@ -1126,8 +1021,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) <
-                flagMap.values.toList().length) {
+            if (index + (widget.columns * widget.rows * i) < flagMap.values.toList().length) {
               switch (widget.buttonMode) {
                 case ButtonMode.MATERIAL:
                   return Center(
@@ -1135,18 +1029,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        flagMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        flagMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: flagMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: flagMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: flagMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: flagMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -1158,18 +1049,15 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     padding: EdgeInsets.all(0),
                     child: Center(
                       child: Text(
-                        flagMap.values.toList()[
-                            index + (widget.columns * widget.rows * i)],
+                        flagMap.values.toList()[index + (widget.columns * widget.rows * i)],
                         style: TextStyle(fontSize: 24),
                       ),
                     ),
                     onPressed: () {
                       widget.onEmojiSelected(
                           Emoji(
-                              name: flagMap.keys.toList()[
-                                  index + (widget.columns * widget.rows * i)],
-                              emoji: flagMap.values.toList()[
-                                  index + (widget.columns * widget.rows * i)]),
+                              name: flagMap.keys.toList()[index + (widget.columns * widget.rows * i)],
+                              emoji: flagMap.values.toList()[index + (widget.columns * widget.rows * i)]),
                           widget.selectedCategory);
                     },
                   ));
@@ -1227,10 +1115,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                       onPressed: () {
                         String emojiName = recentEmojis[index];
-                        widget.onEmojiSelected(
-                            Emoji(
-                                name: emojiName,
-                                emoji: allEmojis[allNames.indexOf(emojiName)]),
+                        widget.onEmojiSelected(Emoji(name: emojiName, emoji: allEmojis[allNames.indexOf(emojiName)]),
                             widget.selectedCategory);
                       },
                     ));
@@ -1248,10 +1133,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                       onPressed: () {
                         String emojiName = recentEmojis[index];
-                        widget.onEmojiSelected(
-                            Emoji(
-                                name: emojiName,
-                                emoji: allEmojis[allNames.indexOf(emojiName)]),
+                        widget.onEmojiSelected(Emoji(name: emojiName, emoji: allEmojis[allNames.indexOf(emojiName)]),
                             widget.selectedCategory);
                       },
                     ));
@@ -1279,10 +1161,8 @@ class _EmojiPickerState extends State<EmojiPicker> {
 
   Widget defaultButton(CategoryIcon categoryIcon) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width /
-          (widget.recommendKeywords == null ? 9 : 10),
-      height: MediaQuery.of(context).size.width /
-          (widget.recommendKeywords == null ? 9 : 10),
+      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
       child: Container(
         color: widget.bgColor,
         child: Center(
@@ -1308,32 +1188,19 @@ class _EmojiPickerState extends State<EmojiPicker> {
       } else if (widget.selectedCategory == Category.RECENT) {
         pageController = PageController(initialPage: recommendedPagesNum);
       } else if (widget.selectedCategory == Category.SMILEYS) {
-        pageController =
-            PageController(initialPage: recentPagesNum + recommendedPagesNum);
+        pageController = PageController(initialPage: recentPagesNum + recommendedPagesNum);
       } else if (widget.selectedCategory == Category.ANIMALS) {
-        pageController = PageController(
-            initialPage: smileyPagesNum + recentPagesNum + recommendedPagesNum);
+        pageController = PageController(initialPage: smileyPagesNum + recentPagesNum + recommendedPagesNum);
       } else if (widget.selectedCategory == Category.FOODS) {
-        pageController = PageController(
-            initialPage: smileyPagesNum +
-                animalPagesNum +
-                recentPagesNum +
-                recommendedPagesNum);
+        pageController =
+            PageController(initialPage: smileyPagesNum + animalPagesNum + recentPagesNum + recommendedPagesNum);
       } else if (widget.selectedCategory == Category.TRAVEL) {
         pageController = PageController(
-            initialPage: smileyPagesNum +
-                animalPagesNum +
-                foodPagesNum +
-                recentPagesNum +
-                recommendedPagesNum);
+            initialPage: smileyPagesNum + animalPagesNum + foodPagesNum + recentPagesNum + recommendedPagesNum);
       } else if (widget.selectedCategory == Category.ACTIVITIES) {
         pageController = PageController(
-            initialPage: smileyPagesNum +
-                animalPagesNum +
-                foodPagesNum +
-                travelPagesNum +
-                recentPagesNum +
-                recommendedPagesNum);
+            initialPage:
+                smileyPagesNum + animalPagesNum + foodPagesNum + travelPagesNum + recentPagesNum + recommendedPagesNum);
       } else if (widget.selectedCategory == Category.OBJECTS) {
         pageController = PageController(
             initialPage: smileyPagesNum +
@@ -1369,814 +1236,673 @@ class _EmojiPickerState extends State<EmojiPicker> {
       pageController.addListener(() {
         setState(() {});
       });
-
-      return Column(
-        children: <Widget>[
-          SizedBox(
-            height: (MediaQuery.of(context).size.width / widget.columns) *
-                widget.rows,
-            width: MediaQuery.of(context).size.width,
-            child: PageView(
-                children: pages,
-                controller: pageController,
-                onPageChanged: (index) {
-                  if (widget.recommendKeywords != null &&
-                      index < recommendedPagesNum) {
-                    widget.selectedCategory = Category.RECOMMENDED;
-                  } else if (index < recentPagesNum + recommendedPagesNum) {
-                    widget.selectedCategory = Category.RECENT;
-                  } else if (index <
-                      recentPagesNum + smileyPagesNum + recommendedPagesNum) {
-                    widget.selectedCategory = Category.SMILEYS;
-                  } else if (index <
-                      recentPagesNum +
-                          smileyPagesNum +
-                          animalPagesNum +
-                          recommendedPagesNum) {
-                    widget.selectedCategory = Category.ANIMALS;
-                  } else if (index <
-                      recentPagesNum +
-                          smileyPagesNum +
-                          animalPagesNum +
-                          foodPagesNum +
-                          recommendedPagesNum) {
-                    widget.selectedCategory = Category.FOODS;
-                  } else if (index <
-                      recentPagesNum +
-                          smileyPagesNum +
-                          animalPagesNum +
-                          foodPagesNum +
-                          travelPagesNum +
-                          recommendedPagesNum) {
-                    widget.selectedCategory = Category.TRAVEL;
-                  } else if (index <
-                      recentPagesNum +
-                          smileyPagesNum +
-                          animalPagesNum +
-                          foodPagesNum +
-                          travelPagesNum +
-                          activityPagesNum +
-                          recommendedPagesNum) {
-                    widget.selectedCategory = Category.ACTIVITIES;
-                  } else if (index <
-                      recentPagesNum +
-                          smileyPagesNum +
-                          animalPagesNum +
-                          foodPagesNum +
-                          travelPagesNum +
-                          activityPagesNum +
-                          objectPagesNum +
-                          recommendedPagesNum) {
-                    widget.selectedCategory = Category.OBJECTS;
-                  } else if (index <
-                      recentPagesNum +
-                          smileyPagesNum +
-                          animalPagesNum +
-                          foodPagesNum +
-                          travelPagesNum +
-                          activityPagesNum +
-                          objectPagesNum +
-                          symbolPagesNum +
-                          recommendedPagesNum) {
-                    widget.selectedCategory = Category.SYMBOLS;
-                  } else {
-                    widget.selectedCategory = Category.FLAGS;
-                  }
-                }),
-          ),
-          Container(
-              color: widget.bgColor,
-              height: 6,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 4, bottom: 0, right: 2, left: 2),
-              child: CustomPaint(
-                painter: _ProgressPainter(
-                    context,
-                    pageController,
-                    new Map.fromIterables([
-                      Category.RECOMMENDED,
-                      Category.RECENT,
-                      Category.SMILEYS,
-                      Category.ANIMALS,
-                      Category.FOODS,
-                      Category.TRAVEL,
-                      Category.ACTIVITIES,
-                      Category.OBJECTS,
-                      Category.SYMBOLS,
-                      Category.FLAGS
-                    ], [
-                      recommendedPagesNum,
-                      recentPagesNum,
-                      smileyPagesNum,
-                      animalPagesNum,
-                      foodPagesNum,
-                      travelPagesNum,
-                      activityPagesNum,
-                      objectPagesNum,
-                      symbolPagesNum,
-                      flagPagesNum
-                    ]),
-                    widget.selectedCategory,
-                    widget.indicatorColor),
-              )),
-          Container(
-              height: 50,
-              color: widget.bgColor,
-              child: Row(
-                children: <Widget>[
-                  widget.recommendKeywords != null
-                      ? SizedBox(
-                          width: MediaQuery.of(context).size.width / 10,
-                          height: MediaQuery.of(context).size.width / 10,
-                          child: widget.buttonMode == ButtonMode.MATERIAL
-                              ? FlatButton(
-                                  padding: EdgeInsets.all(0),
-                                  color: widget.selectedCategory ==
-                                          Category.RECOMMENDED
-                                      ? Colors.black12
-                                      : Colors.transparent,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(0))),
-                                  child: Center(
-                                    child: Icon(
-                                      widget.categoryIcons.recommendationIcon
-                                          .icon,
-                                      size: 22,
-                                      color: widget.selectedCategory ==
-                                              Category.RECOMMENDED
-                                          ? widget.categoryIcons
-                                              .recommendationIcon.selectedColor
-                                          : widget.categoryIcons
-                                              .recommendationIcon.color,
+      return LayoutBuilder(builder: (context, constrains) {
+        final fullWidth = MediaQuery.of(context).size.width;
+        final fullHeight = 120.0; //(MediaQuery.of(context).size.width / widget.columns) * widget.rows;
+        return Column(
+          children: <Widget>[
+            SizedBox(
+              height: min(fullHeight, constrains.maxHeight),
+              width: min(fullWidth, constrains.maxWidth),
+              child: PageView(
+                  children: pages,
+                  controller: pageController,
+                  onPageChanged: (index) {
+                    if (widget.recommendKeywords != null && index < recommendedPagesNum) {
+                      widget.selectedCategory = Category.RECOMMENDED;
+                    } else if (index < recentPagesNum + recommendedPagesNum) {
+                      widget.selectedCategory = Category.RECENT;
+                    } else if (index < recentPagesNum + smileyPagesNum + recommendedPagesNum) {
+                      widget.selectedCategory = Category.SMILEYS;
+                    } else if (index < recentPagesNum + smileyPagesNum + animalPagesNum + recommendedPagesNum) {
+                      widget.selectedCategory = Category.ANIMALS;
+                    } else if (index <
+                        recentPagesNum + smileyPagesNum + animalPagesNum + foodPagesNum + recommendedPagesNum) {
+                      widget.selectedCategory = Category.FOODS;
+                    } else if (index <
+                        recentPagesNum +
+                            smileyPagesNum +
+                            animalPagesNum +
+                            foodPagesNum +
+                            travelPagesNum +
+                            recommendedPagesNum) {
+                      widget.selectedCategory = Category.TRAVEL;
+                    } else if (index <
+                        recentPagesNum +
+                            smileyPagesNum +
+                            animalPagesNum +
+                            foodPagesNum +
+                            travelPagesNum +
+                            activityPagesNum +
+                            recommendedPagesNum) {
+                      widget.selectedCategory = Category.ACTIVITIES;
+                    } else if (index <
+                        recentPagesNum +
+                            smileyPagesNum +
+                            animalPagesNum +
+                            foodPagesNum +
+                            travelPagesNum +
+                            activityPagesNum +
+                            objectPagesNum +
+                            recommendedPagesNum) {
+                      widget.selectedCategory = Category.OBJECTS;
+                    } else if (index <
+                        recentPagesNum +
+                            smileyPagesNum +
+                            animalPagesNum +
+                            foodPagesNum +
+                            travelPagesNum +
+                            activityPagesNum +
+                            objectPagesNum +
+                            symbolPagesNum +
+                            recommendedPagesNum) {
+                      widget.selectedCategory = Category.SYMBOLS;
+                    } else {
+                      widget.selectedCategory = Category.FLAGS;
+                    }
+                  }),
+            ),
+            Container(
+                color: widget.bgColor,
+                height: 6,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(top: 4, bottom: 0, right: 2, left: 2),
+                child: CustomPaint(
+                  painter: _ProgressPainter(
+                      context,
+                      pageController,
+                      new Map.fromIterables([
+                        Category.RECOMMENDED,
+                        Category.RECENT,
+                        Category.SMILEYS,
+                        Category.ANIMALS,
+                        Category.FOODS,
+                        Category.TRAVEL,
+                        Category.ACTIVITIES,
+                        Category.OBJECTS,
+                        Category.SYMBOLS,
+                        Category.FLAGS
+                      ], [
+                        recommendedPagesNum,
+                        recentPagesNum,
+                        smileyPagesNum,
+                        animalPagesNum,
+                        foodPagesNum,
+                        travelPagesNum,
+                        activityPagesNum,
+                        objectPagesNum,
+                        symbolPagesNum,
+                        flagPagesNum
+                      ]),
+                      widget.selectedCategory,
+                      widget.indicatorColor),
+                )),
+            // 下方類別
+            Container(
+                height: 30,
+                color: widget.bgColor,
+                child: Row(
+                  children: <Widget>[
+                    widget.recommendKeywords != null
+                        ? SizedBox(
+                            width: MediaQuery.of(context).size.width / 10,
+                            height: MediaQuery.of(context).size.width / 10,
+                            child: widget.buttonMode == ButtonMode.MATERIAL
+                                ? FlatButton(
+                                    padding: EdgeInsets.all(0),
+                                    color: widget.selectedCategory == Category.RECOMMENDED
+                                        ? Colors.black12
+                                        : Colors.transparent,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                                    child: Center(
+                                      child: Icon(
+                                        widget.categoryIcons.recommendationIcon.icon,
+                                        size: 22,
+                                        color: widget.selectedCategory == Category.RECOMMENDED
+                                            ? widget.categoryIcons.recommendationIcon.selectedColor
+                                            : widget.categoryIcons.recommendationIcon.color,
+                                      ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    if (widget.selectedCategory ==
-                                        Category.RECOMMENDED) {
-                                      return;
-                                    }
+                                    onPressed: () {
+                                      if (widget.selectedCategory == Category.RECOMMENDED) {
+                                        return;
+                                      }
 
-                                    pageController.jumpToPage(0);
-                                  },
-                                )
-                              : CupertinoButton(
-                                  pressedOpacity: 0.4,
-                                  padding: EdgeInsets.all(0),
-                                  color: widget.selectedCategory ==
-                                          Category.RECOMMENDED
-                                      ? Colors.black12
-                                      : Colors.transparent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(0)),
-                                  child: Center(
-                                    child: Icon(
-                                      widget.categoryIcons.recommendationIcon
-                                          .icon,
-                                      size: 22,
-                                      color: widget.selectedCategory ==
-                                              Category.RECOMMENDED
-                                          ? widget.categoryIcons
-                                              .recommendationIcon.selectedColor
-                                          : widget.categoryIcons
-                                              .recommendationIcon.color,
+                                      pageController.jumpToPage(0);
+                                    },
+                                  )
+                                : CupertinoButton(
+                                    pressedOpacity: 0.4,
+                                    padding: EdgeInsets.all(0),
+                                    color: widget.selectedCategory == Category.RECOMMENDED
+                                        ? Colors.black12
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                                    child: Center(
+                                      child: Icon(
+                                        widget.categoryIcons.recommendationIcon.icon,
+                                        size: 22,
+                                        color: widget.selectedCategory == Category.RECOMMENDED
+                                            ? widget.categoryIcons.recommendationIcon.selectedColor
+                                            : widget.categoryIcons.recommendationIcon.color,
+                                      ),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    if (widget.selectedCategory ==
-                                        Category.RECOMMENDED) {
-                                      return;
-                                    }
+                                    onPressed: () {
+                                      if (widget.selectedCategory == Category.RECOMMENDED) {
+                                        return;
+                                      }
 
-                                    pageController.jumpToPage(0);
-                                  },
+                                      pageController.jumpToPage(0);
+                                    },
+                                  ),
+                          )
+                        : Container(),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.RECENT ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.recentIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.RECENT
+                                      ? widget.categoryIcons.recentIcon.selectedColor
+                                      : widget.categoryIcons.recentIcon.color,
                                 ),
-                        )
-                      : Container(),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.RECENT
-                                ? Colors.black12
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.recentIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.RECENT
-                                        ? widget.categoryIcons.recentIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.recentIcon.color,
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.RECENT) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.RECENT) {
+                                  return;
+                                }
 
-                              pageController
-                                  .jumpToPage(0 + recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.RECENT
-                                ? Colors.black12
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.recentIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.RECENT
-                                        ? widget.categoryIcons.recentIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.recentIcon.color,
+                                pageController.jumpToPage(0 + recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.RECENT ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.recentIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.RECENT
+                                      ? widget.categoryIcons.recentIcon.selectedColor
+                                      : widget.categoryIcons.recentIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.RECENT) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.RECENT) {
+                                  return;
+                                }
 
-                              pageController
-                                  .jumpToPage(0 + recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.SMILEYS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.smileyIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.SMILEYS
-                                        ? widget.categoryIcons.smileyIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.smileyIcon.color,
+                                pageController.jumpToPage(0 + recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.SMILEYS ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.smileyIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.SMILEYS
+                                      ? widget.categoryIcons.smileyIcon.selectedColor
+                                      : widget.categoryIcons.smileyIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.SMILEYS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.SMILEYS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(
-                                  0 + recentPagesNum + recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.SMILEYS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.smileyIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.SMILEYS
-                                        ? widget.categoryIcons.smileyIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.smileyIcon.color,
+                                pageController.jumpToPage(0 + recentPagesNum + recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.SMILEYS ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.smileyIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.SMILEYS
+                                      ? widget.categoryIcons.smileyIcon.selectedColor
+                                      : widget.categoryIcons.smileyIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.SMILEYS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.SMILEYS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(
-                                  0 + recentPagesNum + recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.ANIMALS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.animalIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.ANIMALS
-                                        ? widget.categoryIcons.animalIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.animalIcon.color,
+                                pageController.jumpToPage(0 + recentPagesNum + recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.ANIMALS ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.animalIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.ANIMALS
+                                      ? widget.categoryIcons.animalIcon.selectedColor
+                                      : widget.categoryIcons.animalIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.ANIMALS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.ANIMALS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.ANIMALS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.animalIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.ANIMALS
-                                        ? widget.categoryIcons.animalIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.animalIcon.color,
+                                pageController.jumpToPage(recentPagesNum + smileyPagesNum + recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.ANIMALS ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.animalIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.ANIMALS
+                                      ? widget.categoryIcons.animalIcon.selectedColor
+                                      : widget.categoryIcons.animalIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.ANIMALS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.ANIMALS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.FOODS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.foodIcon.icon,
-                                size: 22,
-                                color: widget.selectedCategory == Category.FOODS
-                                    ? widget
-                                        .categoryIcons.foodIcon.selectedColor
-                                    : widget.categoryIcons.foodIcon.color,
+                                pageController.jumpToPage(recentPagesNum + smileyPagesNum + recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.FOODS ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.foodIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.FOODS
+                                      ? widget.categoryIcons.foodIcon.selectedColor
+                                      : widget.categoryIcons.foodIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.FOODS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.FOODS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.FOODS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.foodIcon.icon,
-                                size: 22,
-                                color: widget.selectedCategory == Category.FOODS
-                                    ? widget
-                                        .categoryIcons.foodIcon.selectedColor
-                                    : widget.categoryIcons.foodIcon.color,
+                                pageController
+                                    .jumpToPage(recentPagesNum + smileyPagesNum + animalPagesNum + recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.FOODS ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.foodIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.FOODS
+                                      ? widget.categoryIcons.foodIcon.selectedColor
+                                      : widget.categoryIcons.foodIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.FOODS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.FOODS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.TRAVEL
-                                ? Colors.black12
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.travelIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.TRAVEL
-                                        ? widget.categoryIcons.travelIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.travelIcon.color,
+                                pageController
+                                    .jumpToPage(recentPagesNum + smileyPagesNum + animalPagesNum + recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.TRAVEL ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.travelIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.TRAVEL
+                                      ? widget.categoryIcons.travelIcon.selectedColor
+                                      : widget.categoryIcons.travelIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.TRAVEL) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.TRAVEL) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.TRAVEL
-                                ? Colors.black12
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.travelIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.TRAVEL
-                                        ? widget.categoryIcons.travelIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.travelIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.TRAVEL ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.travelIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.TRAVEL
+                                      ? widget.categoryIcons.travelIcon.selectedColor
+                                      : widget.categoryIcons.travelIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.TRAVEL) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.TRAVEL) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color:
-                                widget.selectedCategory == Category.ACTIVITIES
-                                    ? Colors.black12
-                                    : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.activityIcon.icon,
-                                size: 22,
-                                color: widget.selectedCategory ==
-                                        Category.ACTIVITIES
-                                    ? widget.categoryIcons.activityIcon
-                                        .selectedColor
-                                    : widget.categoryIcons.activityIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color:
+                                  widget.selectedCategory == Category.ACTIVITIES ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.activityIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.ACTIVITIES
+                                      ? widget.categoryIcons.activityIcon.selectedColor
+                                      : widget.categoryIcons.activityIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory ==
-                                  Category.ACTIVITIES) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.ACTIVITIES) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  travelPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color:
-                                widget.selectedCategory == Category.ACTIVITIES
-                                    ? Colors.black12
-                                    : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.activityIcon.icon,
-                                size: 22,
-                                color: widget.selectedCategory ==
-                                        Category.ACTIVITIES
-                                    ? widget.categoryIcons.activityIcon
-                                        .selectedColor
-                                    : widget.categoryIcons.activityIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    travelPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color:
+                                  widget.selectedCategory == Category.ACTIVITIES ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.activityIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.ACTIVITIES
+                                      ? widget.categoryIcons.activityIcon.selectedColor
+                                      : widget.categoryIcons.activityIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory ==
-                                  Category.ACTIVITIES) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.ACTIVITIES) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  travelPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.OBJECTS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.objectIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.OBJECTS
-                                        ? widget.categoryIcons.objectIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.objectIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    travelPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.OBJECTS ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.objectIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.OBJECTS
+                                      ? widget.categoryIcons.objectIcon.selectedColor
+                                      : widget.categoryIcons.objectIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.OBJECTS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.OBJECTS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  activityPagesNum +
-                                  travelPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.OBJECTS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.objectIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.OBJECTS
-                                        ? widget.categoryIcons.objectIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.objectIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    activityPagesNum +
+                                    travelPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.OBJECTS ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.objectIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.OBJECTS
+                                      ? widget.categoryIcons.objectIcon.selectedColor
+                                      : widget.categoryIcons.objectIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.OBJECTS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.OBJECTS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  activityPagesNum +
-                                  travelPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.SYMBOLS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.symbolIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.SYMBOLS
-                                        ? widget.categoryIcons.symbolIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.symbolIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    activityPagesNum +
+                                    travelPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.SYMBOLS ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.symbolIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.SYMBOLS
+                                      ? widget.categoryIcons.symbolIcon.selectedColor
+                                      : widget.categoryIcons.symbolIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.SYMBOLS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.SYMBOLS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  activityPagesNum +
-                                  travelPagesNum +
-                                  objectPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.SYMBOLS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.symbolIcon.icon,
-                                size: 22,
-                                color:
-                                    widget.selectedCategory == Category.SYMBOLS
-                                        ? widget.categoryIcons.symbolIcon
-                                            .selectedColor
-                                        : widget.categoryIcons.symbolIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    activityPagesNum +
+                                    travelPagesNum +
+                                    objectPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.SYMBOLS ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.symbolIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.SYMBOLS
+                                      ? widget.categoryIcons.symbolIcon.selectedColor
+                                      : widget.categoryIcons.symbolIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.SYMBOLS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.SYMBOLS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  activityPagesNum +
-                                  travelPagesNum +
-                                  objectPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    height: MediaQuery.of(context).size.width /
-                        (widget.recommendKeywords == null ? 9 : 10),
-                    child: widget.buttonMode == ButtonMode.MATERIAL
-                        ? FlatButton(
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.FLAGS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(0))),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.flagIcon.icon,
-                                size: 22,
-                                color: widget.selectedCategory == Category.FLAGS
-                                    ? widget
-                                        .categoryIcons.flagIcon.selectedColor
-                                    : widget.categoryIcons.flagIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    activityPagesNum +
+                                    travelPagesNum +
+                                    objectPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      height: MediaQuery.of(context).size.width / (widget.recommendKeywords == null ? 9 : 10),
+                      child: widget.buttonMode == ButtonMode.MATERIAL
+                          ? FlatButton(
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.FLAGS ? Colors.black12 : Colors.transparent,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.flagIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.FLAGS
+                                      ? widget.categoryIcons.flagIcon.selectedColor
+                                      : widget.categoryIcons.flagIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.FLAGS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.FLAGS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  activityPagesNum +
-                                  travelPagesNum +
-                                  objectPagesNum +
-                                  symbolPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          )
-                        : CupertinoButton(
-                            pressedOpacity: 0.4,
-                            padding: EdgeInsets.all(0),
-                            color: widget.selectedCategory == Category.FLAGS
-                                ? Colors.black12
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.all(Radius.circular(0)),
-                            child: Center(
-                              child: Icon(
-                                widget.categoryIcons.flagIcon.icon,
-                                size: 22,
-                                color: widget.selectedCategory == Category.FLAGS
-                                    ? widget
-                                        .categoryIcons.flagIcon.selectedColor
-                                    : widget.categoryIcons.flagIcon.color,
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    activityPagesNum +
+                                    travelPagesNum +
+                                    objectPagesNum +
+                                    symbolPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            )
+                          : CupertinoButton(
+                              pressedOpacity: 0.4,
+                              padding: EdgeInsets.all(0),
+                              color: widget.selectedCategory == Category.FLAGS ? Colors.black12 : Colors.transparent,
+                              borderRadius: BorderRadius.all(Radius.circular(0)),
+                              child: Center(
+                                child: Icon(
+                                  widget.categoryIcons.flagIcon.icon,
+                                  size: 22,
+                                  color: widget.selectedCategory == Category.FLAGS
+                                      ? widget.categoryIcons.flagIcon.selectedColor
+                                      : widget.categoryIcons.flagIcon.color,
+                                ),
                               ),
-                            ),
-                            onPressed: () {
-                              if (widget.selectedCategory == Category.FLAGS) {
-                                return;
-                              }
+                              onPressed: () {
+                                if (widget.selectedCategory == Category.FLAGS) {
+                                  return;
+                                }
 
-                              pageController.jumpToPage(recentPagesNum +
-                                  smileyPagesNum +
-                                  animalPagesNum +
-                                  foodPagesNum +
-                                  activityPagesNum +
-                                  travelPagesNum +
-                                  objectPagesNum +
-                                  symbolPagesNum +
-                                  recommendedPagesNum);
-                            },
-                          ),
-                  ),
-                ],
-              ))
-        ],
-      );
+                                pageController.jumpToPage(recentPagesNum +
+                                    smileyPagesNum +
+                                    animalPagesNum +
+                                    foodPagesNum +
+                                    activityPagesNum +
+                                    travelPagesNum +
+                                    objectPagesNum +
+                                    symbolPagesNum +
+                                    recommendedPagesNum);
+                              },
+                            ),
+                    ),
+                  ],
+                ))
+          ],
+        );
+      });
     } else {
       return Column(
         children: <Widget>[
           SizedBox(
-            height: (MediaQuery.of(context).size.width / widget.columns) *
-                widget.rows,
+            height: (MediaQuery.of(context).size.width / widget.columns) * widget.rows,
             width: MediaQuery.of(context).size.width,
             child: Container(
               color: widget.bgColor,
@@ -2198,9 +1924,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
             height: 50,
             child: Row(
               children: <Widget>[
-                widget.recommendKeywords != null
-                    ? defaultButton(widget.categoryIcons.recommendationIcon)
-                    : Container(),
+                widget.recommendKeywords != null ? defaultButton(widget.categoryIcons.recommendationIcon) : Container(),
                 defaultButton(widget.categoryIcons.recentIcon),
                 defaultButton(widget.categoryIcons.smileyIcon),
                 defaultButton(widget.categoryIcons.animalIcon),
@@ -2226,8 +1950,7 @@ class _ProgressPainter extends CustomPainter {
   final Category selectedCategory;
   final Color indicatorColor;
 
-  _ProgressPainter(this.context, this.pageController, this.pages,
-      this.selectedCategory, this.indicatorColor);
+  _ProgressPainter(this.context, this.pageController, this.pages, this.selectedCategory, this.indicatorColor);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -2236,20 +1959,14 @@ class _ProgressPainter extends CustomPainter {
     if (selectedCategory == Category.RECOMMENDED) {
       offsetInPages = pageController.offset / actualPageWidth;
     } else if (selectedCategory == Category.RECENT) {
-      offsetInPages = (pageController.offset -
-              (pages[Category.RECOMMENDED] * actualPageWidth)) /
-          actualPageWidth;
+      offsetInPages = (pageController.offset - (pages[Category.RECOMMENDED] * actualPageWidth)) / actualPageWidth;
     } else if (selectedCategory == Category.SMILEYS) {
-      offsetInPages = (pageController.offset -
-              ((pages[Category.RECOMMENDED] + pages[Category.RECENT]) *
-                  actualPageWidth)) /
-          actualPageWidth;
+      offsetInPages =
+          (pageController.offset - ((pages[Category.RECOMMENDED] + pages[Category.RECENT]) * actualPageWidth)) /
+              actualPageWidth;
     } else if (selectedCategory == Category.ANIMALS) {
       offsetInPages = (pageController.offset -
-              ((pages[Category.RECOMMENDED] +
-                      pages[Category.RECENT] +
-                      pages[Category.SMILEYS]) *
-                  actualPageWidth)) /
+              ((pages[Category.RECOMMENDED] + pages[Category.RECENT] + pages[Category.SMILEYS]) * actualPageWidth)) /
           actualPageWidth;
     } else if (selectedCategory == Category.FOODS) {
       offsetInPages = (pageController.offset -
@@ -2322,11 +2039,7 @@ class _ProgressPainter extends CustomPainter {
     Rect indicator = Offset(max(0, offsetInPages * indicatorPageWidth), 0) &
         Size(
             indicatorPageWidth -
-                max(
-                    0,
-                    (indicatorPageWidth +
-                            (offsetInPages * indicatorPageWidth)) -
-                        size.width) +
+                max(0, (indicatorPageWidth + (offsetInPages * indicatorPageWidth)) - size.width) +
                 min(0, offsetInPages * indicatorPageWidth),
             size.height);
 

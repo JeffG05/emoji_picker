@@ -1,0 +1,10 @@
+
+**.dart_tool/
+
+.DS_Store
+
+**/build/
+
+**/.gradle/
+
+**/.settings/
