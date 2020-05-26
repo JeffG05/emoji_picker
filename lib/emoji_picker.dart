@@ -318,10 +318,13 @@ class _EmojiPickerState extends State<EmojiPicker> {
     final key = "recents";
     getRecentEmojis().then((_) {
       //print("adding emoji");
-      setState(() {
-        recentEmojis.insert(0, emoji.name);
-        prefs.setStringList(key, recentEmojis);
-      });
+      recentEmojis.insert(0, emoji.name);
+      prefs.setStringList(key, recentEmojis);
+
+      pages.removeAt(recommendedPagesNum);
+      pages.insert(recommendedPagesNum, recentPage());
+      // need use toList making a copy
+      pagesProvider.value = pages.toList();
     });
   }
 
@@ -404,12 +407,12 @@ class _EmojiPickerState extends State<EmojiPicker> {
             if (index + (widget.columns * widget.rows * i) < valueList.length) {
               String emojiTxt = valueList[index + (widget.columns * widget.rows * i)];
               return _emojiIcon(emojiTxt, () {
-                widget.onEmojiSelected(
-                    Emoji(
-                      name: keyList[index + (widget.columns * widget.rows * i)],
-                      emoji: valueList[index + (widget.columns * widget.rows * i)],
-                    ),
-                    selectedCategory);
+                var emoji = Emoji(
+                  name: keyList[index + (widget.columns * widget.rows * i)],
+                  emoji: valueList[index + (widget.columns * widget.rows * i)],
+                );
+                widget.onEmojiSelected(emoji, selectedCategory);
+                addRecentEmoji(emoji);
               });
             } else {
               return Container();
