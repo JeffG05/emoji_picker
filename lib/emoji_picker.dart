@@ -15,10 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// All [Category] are shown in the keyboard bottombar with the exception of [Category.RECOMMENDED]
 /// which only displays when keywords are given
-/// todo: provider emoji list
 /// todo: height with layoutbuilder
-/// todo: refactor dynamic items/ categoris
-/// todo: recommendKeywords 為空時顯示不正常
 enum Category { RECOMMENDED, RECENT, SMILEYS, ANIMALS, FOODS, TRAVEL, ACTIVITIES, OBJECTS, SYMBOLS, FLAGS }
 
 /// Enum to alter the keyboard button style
@@ -45,10 +42,10 @@ class EmojiPicker extends StatefulWidget {
   _EmojiPickerState createState() => new _EmojiPickerState();
 
   /// Number of columns in keyboard grid
-  int columns;
+  final int columns;
 
   /// Number of rows in keyboard grid
-  int rows;
+  final int rows;
 
   /// The currently selected [Category]
   ///
@@ -56,13 +53,13 @@ class EmojiPicker extends StatefulWidget {
   final Category selectedCategory;
 
   /// The function called when the emoji is selected
-  OnEmojiSelected onEmojiSelected;
+  final OnEmojiSelected onEmojiSelected;
 
   /// The background color of the keyboard
-  Color bgColor;
+  final Color bgColor;
 
   /// The color of the keyboard page indicator
-  Color indicatorColor;
+  final Color indicatorColor;
 
   static const Color _defaultBgColor = Color.fromRGBO(242, 242, 242, 1);
 
@@ -82,16 +79,16 @@ class EmojiPicker extends StatefulWidget {
   final String noRecommendationsText;
 
   /// The text style for the [noRecommendationsText]
-  TextStyle noRecommendationsStyle;
+  final TextStyle noRecommendationsStyle;
 
   /// The string to be displayed if no recent emojis to display
-  String noRecentsText;
+  final String noRecentsText;
 
   /// The text style for the [noRecentsText]
-  TextStyle noRecentsStyle;
+  final TextStyle noRecentsStyle;
 
   /// Determines the icon to display for each [Category]
-  CategoryIcons categoryIcons;
+  final CategoryIcons categoryIcons;
 
   /// Determines the style given to the keyboard keys
   ButtonMode buttonMode;
@@ -102,36 +99,23 @@ class EmojiPicker extends StatefulWidget {
     this.columns = 7,
     this.rows = 3,
     this.selectedCategory,
-    this.bgColor,
+    this.bgColor = _defaultBgColor,
     this.indicatorColor = Colors.blue,
     this.recommendKeywords,
     this.numRecommended = 10,
     this.noRecommendationsText = "No Recommendations",
-    this.noRecommendationsStyle,
+    TextStyle noRecommendationsStyle,
     this.noRecentsText = "No Recents",
-    this.noRecentsStyle,
+    TextStyle noRecentsStyle,
     this.enableRecent = false,
     this.enableRecommend = false,
-    this.categoryIcons,
+    CategoryIcons categoryIcons,
     this.buttonMode = ButtonMode.MATERIAL,
     //this.unavailableEmojiIcon,
-  }) : super(key: key) {
-    if (this.noRecommendationsStyle == null) {
-      noRecommendationsStyle = TextStyle(fontSize: 20, color: Colors.black26);
-    }
-
-    if (this.noRecentsStyle == null) {
-      noRecentsStyle = TextStyle(fontSize: 20, color: Colors.black26);
-    }
-
-    if (this.bgColor == null) {
-      bgColor = _defaultBgColor;
-    }
-
-    if (categoryIcons == null) {
-      categoryIcons = CategoryIcons();
-    }
-  }
+  })  : this.categoryIcons = categoryIcons ?? CategoryIcons(),
+        this.noRecommendationsStyle = noRecommendationsStyle ?? TextStyle(fontSize: 20, color: Colors.black26),
+        this.noRecentsStyle = noRecentsStyle ?? TextStyle(fontSize: 20, color: Colors.black26),
+        super(key: key);
 }
 
 class _Recommended {
@@ -333,7 +317,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
     final prefs = await SharedPreferences.getInstance();
     final key = "recents";
     getRecentEmojis().then((_) {
-      print("adding emoji");
+      //print("adding emoji");
       setState(() {
         recentEmojis.insert(0, emoji.name);
         prefs.setStringList(key, recentEmojis);
@@ -354,6 +338,44 @@ class _EmojiPickerState extends State<EmojiPicker> {
     return newMap;
   }
 
+  Widget _emojiIcon(String emojiTxt, Function onSelected) {
+    switch (widget.buttonMode) {
+      case ButtonMode.MATERIAL:
+        return Center(
+            child: FlatButton(
+                padding: EdgeInsets.all(0),
+                child: Center(
+                  child: Text(
+                    emojiTxt,
+                    style: TextStyle(fontSize: 24),
+                  ),
+                ),
+                onPressed: onSelected
+                //   widget.onEmojiSelected(emoji, selectedCategory);
+                // },
+                ));
+        break;
+      case ButtonMode.CUPERTINO:
+        return Center(
+            child: CupertinoButton(
+                pressedOpacity: 0.4,
+                padding: EdgeInsets.all(0),
+                child: Center(
+                  child: Text(
+                    emojiTxt,
+                    style: TextStyle(fontSize: 24),
+                  ),
+                ),
+                onPressed: onSelected
+                //   widget.onEmojiSelected(emoji, selectedCategory);
+                // },
+                ));
+        break;
+      default:
+        return Container();
+    }
+  }
+
   Future<Map<String, String>> getEmojis(
     Map<String, String> defines,
     Function(List<Widget>) items,
@@ -366,6 +388,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
 
     List<Widget> avalidPages = [];
 
+    final keyList = avalidMap.keys.toList();
+    final valueList = avalidMap.values.toList();
+
     for (var i = 0; i < pagesNum; i++) {
       avalidPages.add(Container(
         key: Key("pkmj_${avalidMap.keys.first}_$i"),
@@ -376,52 +401,16 @@ class _EmojiPickerState extends State<EmojiPicker> {
           primary: true,
           crossAxisCount: widget.columns,
           children: List.generate(widget.rows * widget.columns, (index) {
-            if (index + (widget.columns * widget.rows * i) < avalidMap.values.toList().length) {
-              String emojiTxt = avalidMap.values.toList()[index + (widget.columns * widget.rows * i)];
-
-              switch (widget.buttonMode) {
-                case ButtonMode.MATERIAL:
-                  return Center(
-                      child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    child: Center(
-                      child: Text(
-                        emojiTxt,
-                        style: TextStyle(fontSize: 24),
-                      ),
+            if (index + (widget.columns * widget.rows * i) < valueList.length) {
+              String emojiTxt = valueList[index + (widget.columns * widget.rows * i)];
+              return _emojiIcon(emojiTxt, () {
+                widget.onEmojiSelected(
+                    Emoji(
+                      name: keyList[index + (widget.columns * widget.rows * i)],
+                      emoji: valueList[index + (widget.columns * widget.rows * i)],
                     ),
-                    onPressed: () {
-                      widget.onEmojiSelected(
-                          Emoji(
-                              name: avalidMap.keys.toList()[index + (widget.columns * widget.rows * i)],
-                              emoji: avalidMap.values.toList()[index + (widget.columns * widget.rows * i)]),
-                          selectedCategory);
-                    },
-                  ));
-                  break;
-                case ButtonMode.CUPERTINO:
-                  return Center(
-                      child: CupertinoButton(
-                    pressedOpacity: 0.4,
-                    padding: EdgeInsets.all(0),
-                    child: Center(
-                      child: Text(
-                        emojiTxt,
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                    onPressed: () {
-                      widget.onEmojiSelected(
-                          Emoji(
-                              name: avalidMap.keys.toList()[index + (widget.columns * widget.rows * i)],
-                              emoji: avalidMap.values.toList()[index + (widget.columns * widget.rows * i)]),
-                          selectedCategory);
-                    },
-                  ));
-                  break;
-                default:
-                  return Container();
-              }
+                    selectedCategory);
+              });
             } else {
               return Container();
             }
@@ -530,7 +519,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
       if (recommendedEmojis.length > widget.numRecommended) {
         recommendedEmojis = recommendedEmojis.getRange(0, widget.numRecommended).toList();
       }
-
+      //print("reocmmend items: ${recommendedEmojis.length}");
       if (recommendedEmojis.length != 0) {
         recommendedPagesNum = (recommendedEmojis.length / (widget.rows * widget.columns)).ceil();
 
@@ -543,49 +532,14 @@ class _EmojiPickerState extends State<EmojiPicker> {
               crossAxisCount: widget.columns,
               children: List.generate(widget.rows * widget.columns, (index) {
                 if (index + (widget.columns * widget.rows * i) < recommendedEmojis.length) {
-                  switch (widget.buttonMode) {
-                    case ButtonMode.MATERIAL:
-                      return Center(
-                          child: FlatButton(
-                        padding: EdgeInsets.all(0),
-                        child: Center(
-                          child: Text(
-                            recommendedEmojis[index + (widget.columns * widget.rows * i)].emoji,
-                            style: TextStyle(fontSize: 24),
-                          ),
-                        ),
-                        onPressed: () {
-                          _Recommended recommended = recommendedEmojis[index + (widget.columns * widget.rows * i)];
-                          widget.onEmojiSelected(
-                              Emoji(name: recommended.name, emoji: recommended.emoji), selectedCategory);
-                          addRecentEmoji(Emoji(name: recommended.name, emoji: recommended.emoji));
-                        },
-                      ));
-                      break;
-                    case ButtonMode.CUPERTINO:
-                      return Center(
-                          child: CupertinoButton(
-                        pressedOpacity: 0.4,
-                        padding: EdgeInsets.all(0),
-                        child: Center(
-                          child: Text(
-                            recommendedEmojis[index + (widget.columns * widget.rows * i)].emoji,
-                            style: TextStyle(fontSize: 24),
-                          ),
-                        ),
-                        onPressed: () {
-                          _Recommended recommended = recommendedEmojis[index + (widget.columns * widget.rows * i)];
-                          widget.onEmojiSelected(
-                              Emoji(name: recommended.name, emoji: recommended.emoji), selectedCategory);
-                          addRecentEmoji(Emoji(name: recommended.name, emoji: recommended.emoji));
-                        },
-                      ));
+                  var emojiTxt = recommendedEmojis[index + (widget.columns * widget.rows * i)].emoji;
 
-                      break;
-                    default:
-                      return Container();
-                      break;
-                  }
+                  return _emojiIcon(emojiTxt, () {
+                    _Recommended recommended = recommendedEmojis[index + (widget.columns * widget.rows * i)];
+                    var emoji = Emoji(name: recommended.name, emoji: recommended.emoji);
+                    widget.onEmojiSelected(emoji, selectedCategory);
+                    addRecentEmoji(emoji);
+                  });
                 } else {
                   return Container();
                 }
@@ -684,18 +638,23 @@ class _EmojiPickerState extends State<EmojiPicker> {
     if (widget.enableRecommend) {
       final preNum = recommendedPagesNum;
       final recommendedPages2 = await _getRecommentPages(widget.recommendKeywords);
-      print("recommend : ${recommendedPages2.length}");
       pages.removeRange(0, preNum);
-      pages.insertAll(0, recommendedPages2); // 1 emtpy, try agian after all loaded
-      pagesProvider.value = pages;
+      pages.insertAll(0, recommendedPages2);
+      // need use toList making a copy
+      pagesProvider.value = pages.toList();
+    } else {
+      recommendedPagesNum = 0;
     }
 
     if (widget.enableRecent) {
       getRecentEmojis().then((_) {
         pages.removeAt(recommendedPagesNum);
         pages.insert(recommendedPagesNum, recentPage());
-        setState(() {});
+        // need use toList making a copy
+        pagesProvider.value = pages.toList();
       });
+    } else {
+      recentPagesNum = 0;
     }
   }
 
@@ -709,47 +668,12 @@ class _EmojiPickerState extends State<EmojiPicker> {
             crossAxisCount: widget.columns,
             children: List.generate(widget.rows * widget.columns, (index) {
               if (index < recentEmojis.length) {
-                switch (widget.buttonMode) {
-                  case ButtonMode.MATERIAL:
-                    return Center(
-                        child: FlatButton(
-                      padding: EdgeInsets.all(0),
-                      child: Center(
-                        child: Text(
-                          allEmojis[allNames.indexOf(recentEmojis[index])],
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                      onPressed: () {
-                        String emojiName = recentEmojis[index];
-                        widget.onEmojiSelected(
-                            Emoji(name: emojiName, emoji: allEmojis[allNames.indexOf(emojiName)]), selectedCategory);
-                      },
-                    ));
-                    break;
-                  case ButtonMode.CUPERTINO:
-                    return Center(
-                        child: CupertinoButton(
-                      pressedOpacity: 0.4,
-                      padding: EdgeInsets.all(0),
-                      child: Center(
-                        child: Text(
-                          allEmojis[allNames.indexOf(recentEmojis[index])],
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                      onPressed: () {
-                        String emojiName = recentEmojis[index];
-                        widget.onEmojiSelected(
-                            Emoji(name: emojiName, emoji: allEmojis[allNames.indexOf(emojiName)]), selectedCategory);
-                      },
-                    ));
-
-                    break;
-                  default:
-                    return Container();
-                    break;
-                }
+                var emojiTxt = allEmojis[allNames.indexOf(recentEmojis[index])];
+                return _emojiIcon(emojiTxt, () {
+                  String emojiName = recentEmojis[index];
+                  widget.onEmojiSelected(
+                      Emoji(name: emojiName, emoji: allEmojis[allNames.indexOf(emojiName)]), selectedCategory);
+                });
               } else {
                 return Container();
               }
@@ -842,10 +766,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
   Widget build(BuildContext context) {
     if (true) {
       // update with latest chaged
-      if (widget.enableRecent) {
-        pages.removeAt(recommendedPagesNum);
-        pages.insert(recommendedPagesNum, recentPage());
-      }
+      // if (widget.enableRecent) {
+      //   pages.removeAt(recommendedPagesNum);
+      //   pages.insert(recommendedPagesNum, recentPage());
+      // }
 
       return LayoutBuilder(builder: (context, constrains) {
         final fullWidth = MediaQuery.of(context).size.width;
@@ -856,17 +780,17 @@ class _EmojiPickerState extends State<EmojiPicker> {
           child: Consumer<ValueNotifier<List<Widget>>>(
             builder: (ctx, value, w) {
               _makePageController();
-
+              //print("page rebuild");
               return Column(
                 children: <Widget>[
                   SizedBox(
-                    height: min(fullHeight, constrains.maxHeight),
+                    height: min(fullHeight, constrains.maxHeight - 40),
                     width: min(fullWidth, constrains.maxWidth),
                     child: PageView(
                       children: value.value,
                       controller: pageController,
                       onPageChanged: (index) {
-                        print("page changed $index");
+                        // print("page changed $index");
                         if (widget.enableRecommend && widget.recommendKeywords != null && index < recommendedPagesNum) {
                           selectedCategory = Category.RECOMMENDED;
                         } else if (widget.enableRecent && index < recentPagesNum + recommendedPagesNum) {
@@ -960,10 +884,11 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       )),
                   // 下方類別
                   Container(
-                      height: 30,
-                      color: widget.bgColor,
-                      child: Row(
-                        children: <Widget>[
+                    height: 30,
+                    color: widget.bgColor,
+                    child: Row(
+                      children: () {
+                        var ret = <Widget>[
                           // widget.recommendKeywords != null
                           //     ? _catgoryButton(Category.RECOMMENDED, widget.categoryIcons.recommendationIcon)
                           //     : Container(),
@@ -976,8 +901,20 @@ class _EmojiPickerState extends State<EmojiPicker> {
                           _catgoryButton(Category.OBJECTS, widget.categoryIcons.objectIcon),
                           _catgoryButton(Category.SYMBOLS, widget.categoryIcons.symbolIcon),
                           _catgoryButton(Category.FLAGS, widget.categoryIcons.flagIcon),
-                        ],
-                      ))
+                        ];
+                        if (widget.enableRecent) {
+                          ret.insert(
+                            0,
+                            _catgoryButton(Category.RECENT, widget.categoryIcons.recentIcon),
+                          );
+                        }
+                        if (widget.enableRecommend) {
+                          ret.insert(0, _catgoryButton(Category.RECOMMENDED, widget.categoryIcons.recommendationIcon));
+                        }
+                        return ret;
+                      }(),
+                    ),
+                  )
                 ],
               );
             },

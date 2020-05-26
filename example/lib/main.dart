@@ -40,7 +40,7 @@ class MainPageState extends State<MainPage> {
           controller: textController,
         ),
         Container(
-          height: 180,
+          height: 130,
           child: EmojiPicker(
             rows: 2,
             columns: 7,
@@ -50,6 +50,10 @@ class MainPageState extends State<MainPage> {
             recommendKeywords: ["racing", "horse"],
             numRecommended: 10,
             categoryIcons: CategoryIcons(
+              recommendationIcon: CategoryIcon(
+                icon: Icons.search,
+                selectedColor: Colors.yellowAccent,
+              ),
               smileyIcon: CategoryIcon(
                 icon: Icons.tag_faces,
                 selectedColor: Colors.yellowAccent,
@@ -83,6 +87,8 @@ class MainPageState extends State<MainPage> {
                 selectedColor: Colors.yellowAccent,
               ),
             ),
+            enableRecommend: true,
+            enableRecent: true,
             onEmojiSelected: (emoji, category) {
               var txtOrg = textController.value.text;
               String txt;
