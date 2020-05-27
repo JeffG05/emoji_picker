@@ -314,6 +314,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
   }
 
   void addRecentEmoji(Emoji emoji) async {
+    if (widget.enableRecent == false) {
+      return;
+    }
+
     final prefs = await SharedPreferences.getInstance();
     final key = "recents";
     getRecentEmojis().then((_) {
