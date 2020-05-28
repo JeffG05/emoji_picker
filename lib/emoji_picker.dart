@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///
 /// All [Category] are shown in the keyboard bottombar with the exception of [Category.RECOMMENDED]
 /// which only displays when keywords are given
-/// todo: height with layoutbuilder
+
 enum Category { RECOMMENDED, RECENT, SMILEYS, ANIMALS, FOODS, TRAVEL, ACTIVITIES, OBJECTS, SYMBOLS, FLAGS }
 
 /// Enum to alter the keyboard button style
@@ -64,7 +64,7 @@ class EmojiPicker extends StatefulWidget {
   static const Color _defaultBgColor = Color.fromRGBO(242, 242, 242, 1);
 
   /// A list of keywords that are used to provide the user with recommended emojis in [Category.RECOMMENDED]
-  List<String> recommendKeywords;
+  final ValueNotifier<List<String>> recommendKeywords;
 
   ///
   final enableRecommend;
@@ -91,7 +91,7 @@ class EmojiPicker extends StatefulWidget {
   final CategoryIcons categoryIcons;
 
   /// Determines the style given to the keyboard keys
-  ButtonMode buttonMode;
+  final ButtonMode buttonMode;
 
   EmojiPicker({
     Key key,
@@ -248,6 +248,7 @@ class Emoji {
 
 class _EmojiPickerState extends State<EmojiPicker> {
   static const platform = const MethodChannel("emoji_picker");
+  static const double CATEGORY_BUTTON_HEIGHT = 30;
 
   ValueNotifier<List<Widget>> pagesProvider = ValueNotifier<List<Widget>>([]);
   List<Widget> pages = <Widget>[];
@@ -286,10 +287,38 @@ class _EmojiPickerState extends State<EmojiPicker> {
       selectedCategory = Category.SMILEYS;
     }
 
+    widget.recommendKeywords.addListener(_recommendChanged);
+
     updateEmojis().then((_) {
       loaded = true;
     });
     super.initState();
+  }
+
+  static const RecommendChangeDelayTime = 500;
+
+  int nextRecommendChangeTime = 0;
+
+  void _recommendChanged() async {
+    if (nextRecommendChangeTime != 0) {
+      nextRecommendChangeTime += RecommendChangeDelayTime;
+      return;
+    } else {
+      nextRecommendChangeTime = RecommendChangeDelayTime;
+    }
+
+    while (nextRecommendChangeTime != 0) {
+      final waitingTime = nextRecommendChangeTime;
+      nextRecommendChangeTime = 0;
+      await Future.delayed(Duration(milliseconds: waitingTime));
+    }
+
+    final preNum = recommendedPagesNum;
+    final recommendedPages2 = await _getRecommentPages(widget.recommendKeywords.value);
+    pages.removeRange(0, preNum);
+    pages.insertAll(0, recommendedPages2);
+    // need use toList making a copy
+    pagesProvider.value = pages.toList();
   }
 
   Future<bool> _isEmojiAvailable(String emoji) async {
@@ -644,7 +673,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
 
     if (widget.enableRecommend) {
       final preNum = recommendedPagesNum;
-      final recommendedPages2 = await _getRecommentPages(widget.recommendKeywords);
+      final recommendedPages2 = await _getRecommentPages(widget.recommendKeywords.value);
       pages.removeRange(0, preNum);
       pages.insertAll(0, recommendedPages2);
       // need use toList making a copy
@@ -771,206 +800,190 @@ class _EmojiPickerState extends State<EmojiPicker> {
 
   @override
   Widget build(BuildContext context) {
-    if (true) {
-      // update with latest chaged
-      // if (widget.enableRecent) {
-      //   pages.removeAt(recommendedPagesNum);
-      //   pages.insert(recommendedPagesNum, recentPage());
-      // }
+    return LayoutBuilder(builder: (context, constrains) {
+      final fullWidth = MediaQuery.of(context).size.width;
+      final fullHeight = (MediaQuery.of(context).size.width / widget.columns) * widget.rows;
 
-      return LayoutBuilder(builder: (context, constrains) {
-        final fullWidth = MediaQuery.of(context).size.width;
-        final fullHeight = (MediaQuery.of(context).size.width / widget.columns) * widget.rows;
-
-        return ChangeNotifierProvider.value(
-          value: pagesProvider,
-          child: Consumer<ValueNotifier<List<Widget>>>(
-            builder: (ctx, value, w) {
-              _makePageController();
-              //print("page rebuild");
-              return Column(
-                children: <Widget>[
-                  SizedBox(
-                    height: min(fullHeight, constrains.maxHeight - 40),
-                    width: min(fullWidth, constrains.maxWidth),
-                    child: PageView(
-                      children: value.value,
-                      controller: pageController,
-                      onPageChanged: (index) {
-                        // print("page changed $index");
-                        if (widget.enableRecommend && widget.recommendKeywords != null && index < recommendedPagesNum) {
-                          selectedCategory = Category.RECOMMENDED;
-                        } else if (widget.enableRecent && index < recentPagesNum + recommendedPagesNum) {
-                          selectedCategory = Category.RECENT;
-                        } else if (index < recentPagesNum + smileyPagesNum + recommendedPagesNum) {
-                          selectedCategory = Category.SMILEYS;
-                        } else if (index < recentPagesNum + smileyPagesNum + animalPagesNum + recommendedPagesNum) {
-                          selectedCategory = Category.ANIMALS;
-                        } else if (index <
-                            recentPagesNum + smileyPagesNum + animalPagesNum + foodPagesNum + recommendedPagesNum) {
-                          selectedCategory = Category.FOODS;
-                        } else if (index <
-                            recentPagesNum +
-                                smileyPagesNum +
-                                animalPagesNum +
-                                foodPagesNum +
-                                travelPagesNum +
-                                recommendedPagesNum) {
-                          selectedCategory = Category.TRAVEL;
-                        } else if (index <
-                            recentPagesNum +
-                                smileyPagesNum +
-                                animalPagesNum +
-                                foodPagesNum +
-                                travelPagesNum +
-                                activityPagesNum +
-                                recommendedPagesNum) {
-                          selectedCategory = Category.ACTIVITIES;
-                        } else if (index <
-                            recentPagesNum +
-                                smileyPagesNum +
-                                animalPagesNum +
-                                foodPagesNum +
-                                travelPagesNum +
-                                activityPagesNum +
-                                objectPagesNum +
-                                recommendedPagesNum) {
-                          selectedCategory = Category.OBJECTS;
-                        } else if (index <
-                            recentPagesNum +
-                                smileyPagesNum +
-                                animalPagesNum +
-                                foodPagesNum +
-                                travelPagesNum +
-                                activityPagesNum +
-                                objectPagesNum +
-                                symbolPagesNum +
-                                recommendedPagesNum) {
-                          selectedCategory = Category.SYMBOLS;
-                        } else {
-                          selectedCategory = Category.FLAGS;
-                        }
-                        setState(() {});
-                      },
-                    ),
-                  ),
-                  Container(
-                      color: widget.bgColor,
-                      height: 6,
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.only(top: 4, bottom: 0, right: 2, left: 2),
-                      child: CustomPaint(
-                        painter: _ProgressPainter(
-                            context,
-                            pageController,
-                            Map.fromIterables([
-                              Category.RECOMMENDED,
-                              Category.RECENT,
-                              Category.SMILEYS,
-                              Category.ANIMALS,
-                              Category.FOODS,
-                              Category.TRAVEL,
-                              Category.ACTIVITIES,
-                              Category.OBJECTS,
-                              Category.SYMBOLS,
-                              Category.FLAGS
-                            ], [
-                              recommendedPagesNum,
-                              recentPagesNum,
-                              smileyPagesNum,
-                              animalPagesNum,
-                              foodPagesNum,
-                              travelPagesNum,
-                              activityPagesNum,
-                              objectPagesNum,
-                              symbolPagesNum,
-                              flagPagesNum
-                            ]),
-                            selectedCategory,
-                            widget.indicatorColor),
-                      )),
-                  // 下方類別
-                  Container(
-                    height: 30,
-                    color: widget.bgColor,
-                    child: Row(
-                      children: () {
-                        var ret = <Widget>[
-                          // widget.recommendKeywords != null
-                          //     ? _catgoryButton(Category.RECOMMENDED, widget.categoryIcons.recommendationIcon)
-                          //     : Container(),
-                          // _catgoryButton(Category.RECENT, widget.categoryIcons.recentIcon),
-                          _catgoryButton(Category.SMILEYS, widget.categoryIcons.smileyIcon),
-                          _catgoryButton(Category.ANIMALS, widget.categoryIcons.animalIcon),
-                          _catgoryButton(Category.FOODS, widget.categoryIcons.foodIcon),
-                          _catgoryButton(Category.TRAVEL, widget.categoryIcons.travelIcon),
-                          _catgoryButton(Category.ACTIVITIES, widget.categoryIcons.activityIcon),
-                          _catgoryButton(Category.OBJECTS, widget.categoryIcons.objectIcon),
-                          _catgoryButton(Category.SYMBOLS, widget.categoryIcons.symbolIcon),
-                          _catgoryButton(Category.FLAGS, widget.categoryIcons.flagIcon),
-                        ];
-                        if (widget.enableRecent) {
-                          ret.insert(
-                            0,
-                            _catgoryButton(Category.RECENT, widget.categoryIcons.recentIcon),
-                          );
-                        }
-                        if (widget.enableRecommend) {
-                          ret.insert(0, _catgoryButton(Category.RECOMMENDED, widget.categoryIcons.recommendationIcon));
-                        }
-                        return ret;
-                      }(),
-                    ),
-                  )
-                ],
-              );
-            },
-          ),
-        );
-      });
-    } else {
-      // loading
-      return Column(
-        children: <Widget>[
-          SizedBox(
-            height: (MediaQuery.of(context).size.width / widget.columns) * widget.rows,
-            width: MediaQuery.of(context).size.width,
-            child: Container(
-              color: widget.bgColor,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          ),
-          Container(
-            height: 6,
-            width: MediaQuery.of(context).size.width,
-            color: widget.bgColor,
-            padding: EdgeInsets.only(top: 4, left: 2, right: 2),
-            child: Container(
-              color: widget.indicatorColor,
-            ),
-          ),
-          Container(
-            height: 50,
-            child: Row(
+      return ChangeNotifierProvider.value(
+        value: pagesProvider,
+        child: Consumer<ValueNotifier<List<Widget>>>(
+          builder: (ctx, value, w) {
+            if (value.value.isEmpty) {
+              return _loadingPage();
+            }
+            _makePageController();
+            //print("page rebuild");
+            return Column(
               children: <Widget>[
-                widget.recommendKeywords != null ? defaultButton(widget.categoryIcons.recommendationIcon) : Container(),
-                defaultButton(widget.categoryIcons.recentIcon),
-                defaultButton(widget.categoryIcons.smileyIcon),
-                defaultButton(widget.categoryIcons.animalIcon),
-                defaultButton(widget.categoryIcons.foodIcon),
-                defaultButton(widget.categoryIcons.travelIcon),
-                defaultButton(widget.categoryIcons.activityIcon),
-                defaultButton(widget.categoryIcons.objectIcon),
-                defaultButton(widget.categoryIcons.symbolIcon),
-                defaultButton(widget.categoryIcons.flagIcon),
+                SizedBox(
+                  height: min(fullHeight, constrains.maxHeight - CATEGORY_BUTTON_HEIGHT),
+                  width: min(fullWidth, constrains.maxWidth),
+                  child: PageView(
+                    children: value.value,
+                    controller: pageController,
+                    onPageChanged: (index) {
+                      // print("page changed $index");
+                      if (widget.enableRecommend && widget.recommendKeywords != null && index < recommendedPagesNum) {
+                        selectedCategory = Category.RECOMMENDED;
+                      } else if (widget.enableRecent && index < recentPagesNum + recommendedPagesNum) {
+                        selectedCategory = Category.RECENT;
+                      } else if (index < recentPagesNum + smileyPagesNum + recommendedPagesNum) {
+                        selectedCategory = Category.SMILEYS;
+                      } else if (index < recentPagesNum + smileyPagesNum + animalPagesNum + recommendedPagesNum) {
+                        selectedCategory = Category.ANIMALS;
+                      } else if (index <
+                          recentPagesNum + smileyPagesNum + animalPagesNum + foodPagesNum + recommendedPagesNum) {
+                        selectedCategory = Category.FOODS;
+                      } else if (index <
+                          recentPagesNum +
+                              smileyPagesNum +
+                              animalPagesNum +
+                              foodPagesNum +
+                              travelPagesNum +
+                              recommendedPagesNum) {
+                        selectedCategory = Category.TRAVEL;
+                      } else if (index <
+                          recentPagesNum +
+                              smileyPagesNum +
+                              animalPagesNum +
+                              foodPagesNum +
+                              travelPagesNum +
+                              activityPagesNum +
+                              recommendedPagesNum) {
+                        selectedCategory = Category.ACTIVITIES;
+                      } else if (index <
+                          recentPagesNum +
+                              smileyPagesNum +
+                              animalPagesNum +
+                              foodPagesNum +
+                              travelPagesNum +
+                              activityPagesNum +
+                              objectPagesNum +
+                              recommendedPagesNum) {
+                        selectedCategory = Category.OBJECTS;
+                      } else if (index <
+                          recentPagesNum +
+                              smileyPagesNum +
+                              animalPagesNum +
+                              foodPagesNum +
+                              travelPagesNum +
+                              activityPagesNum +
+                              objectPagesNum +
+                              symbolPagesNum +
+                              recommendedPagesNum) {
+                        selectedCategory = Category.SYMBOLS;
+                      } else {
+                        selectedCategory = Category.FLAGS;
+                      }
+                      setState(() {});
+                    },
+                  ),
+                ),
+                Container(
+                    color: widget.bgColor,
+                    height: 6,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(top: 4, bottom: 0, right: 2, left: 2),
+                    child: CustomPaint(
+                      painter: _ProgressPainter(
+                          context,
+                          pageController,
+                          Map.fromIterables([
+                            Category.RECOMMENDED,
+                            Category.RECENT,
+                            Category.SMILEYS,
+                            Category.ANIMALS,
+                            Category.FOODS,
+                            Category.TRAVEL,
+                            Category.ACTIVITIES,
+                            Category.OBJECTS,
+                            Category.SYMBOLS,
+                            Category.FLAGS
+                          ], [
+                            recommendedPagesNum,
+                            recentPagesNum,
+                            smileyPagesNum,
+                            animalPagesNum,
+                            foodPagesNum,
+                            travelPagesNum,
+                            activityPagesNum,
+                            objectPagesNum,
+                            symbolPagesNum,
+                            flagPagesNum
+                          ]),
+                          selectedCategory,
+                          widget.indicatorColor),
+                    )),
+                _categoryButtons()
               ],
-            ),
-          )
-        ],
+            );
+          },
+        ),
       );
-    }
+    });
+  }
+
+  Widget _categoryButtons() {
+    return Container(
+      height: CATEGORY_BUTTON_HEIGHT,
+      color: widget.bgColor,
+      child: Row(
+        children: () {
+          var ret = <Widget>[
+            // widget.recommendKeywords != null
+            //     ? _catgoryButton(Category.RECOMMENDED, widget.categoryIcons.recommendationIcon)
+            //     : Container(),
+            // _catgoryButton(Category.RECENT, widget.categoryIcons.recentIcon),
+            _catgoryButton(Category.SMILEYS, widget.categoryIcons.smileyIcon),
+            _catgoryButton(Category.ANIMALS, widget.categoryIcons.animalIcon),
+            _catgoryButton(Category.FOODS, widget.categoryIcons.foodIcon),
+            _catgoryButton(Category.TRAVEL, widget.categoryIcons.travelIcon),
+            _catgoryButton(Category.ACTIVITIES, widget.categoryIcons.activityIcon),
+            _catgoryButton(Category.OBJECTS, widget.categoryIcons.objectIcon),
+            _catgoryButton(Category.SYMBOLS, widget.categoryIcons.symbolIcon),
+            _catgoryButton(Category.FLAGS, widget.categoryIcons.flagIcon),
+          ];
+          if (widget.enableRecent) {
+            ret.insert(
+              0,
+              _catgoryButton(Category.RECENT, widget.categoryIcons.recentIcon),
+            );
+          }
+          if (widget.enableRecommend) {
+            ret.insert(0, _catgoryButton(Category.RECOMMENDED, widget.categoryIcons.recommendationIcon));
+          }
+          return ret;
+        }(),
+      ),
+    );
+  }
+
+  Widget _loadingPage() {
+    // loading
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: (MediaQuery.of(context).size.width / widget.columns) * widget.rows,
+          width: MediaQuery.of(context).size.width,
+          child: Container(
+            color: widget.bgColor,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ),
+        Container(
+          height: 6,
+          width: MediaQuery.of(context).size.width,
+          color: widget.bgColor,
+          padding: EdgeInsets.only(top: 4, left: 2, right: 2),
+          child: Container(
+            color: widget.indicatorColor,
+          ),
+        ),
+        _categoryButtons()
+      ],
+    );
   }
 
   Widget _catgoryButton(Category category, CategoryIcon icon) {
@@ -980,7 +993,8 @@ class _EmojiPickerState extends State<EmojiPicker> {
       child: widget.buttonMode == ButtonMode.MATERIAL
           ? FlatButton(
               padding: EdgeInsets.all(0),
-              color: selectedCategory == category ? Colors.black12 : Colors.transparent,
+              //color: selectedCategory == category ? Colors.black12 : Colors.transparent,
+              color: Colors.blue,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(0))),
               child: Center(
                 child: Icon(
@@ -998,8 +1012,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
               },
             )
           : CupertinoButton(
-              pressedOpacity: 0.4,
+              pressedOpacity: 1.0,
               padding: EdgeInsets.all(0),
+              //color: Colors.blue,
               color: selectedCategory == category ? Colors.black12 : Colors.transparent,
               borderRadius: BorderRadius.all(Radius.circular(0)),
               child: Center(

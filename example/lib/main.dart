@@ -26,65 +26,107 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   TextEditingController textController;
+  TextEditingController textRecommendController;
+  ValueNotifier<List<String>> recommendList = ValueNotifier<List<String>>([]);
   @override
   void initState() {
     textController = TextEditingController();
+    textRecommendController = TextEditingController();
+
+    textRecommendController.addListener(() {
+      recommendList.value = textRecommendController.text.split(" ");
+    });
     super.initState();
   }
 
   @override
+  void dispose() {
+    textController.dispose();
+    textRecommendController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final colorGold = Color.fromRGBO(205, 167, 119, 1);
     return Column(
       children: <Widget>[
-        TextField(
-          controller: textController,
+        Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text("Output"),
+            ),
+            Expanded(
+              child: TextField(
+                controller: textController,
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text("Search"),
+            ),
+            Expanded(
+              child: TextField(
+                controller: textRecommendController,
+              ),
+            ),
+          ],
         ),
         Container(
-          height: 130,
+          height: 430,
           child: EmojiPicker(
-            rows: 2,
+            rows: 3,
             columns: 7,
             bgColor: Colors.black,
             indicatorColor: Colors.white,
             buttonMode: ButtonMode.CUPERTINO,
-            recommendKeywords: ["racing", "horse"],
+            recommendKeywords: recommendList,
             numRecommended: 10,
             categoryIcons: CategoryIcons(
               recommendationIcon: CategoryIcon(
                 icon: Icons.search,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
+              ),
+              recentIcon: CategoryIcon(
+                icon: Icons.access_time,
+                selectedColor: colorGold,
               ),
               smileyIcon: CategoryIcon(
                 icon: Icons.tag_faces,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
               ),
               animalIcon: CategoryIcon(
                 icon: Icons.pets,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
               ),
               foodIcon: CategoryIcon(
                 icon: Icons.fastfood,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
               ),
               travelIcon: CategoryIcon(
                 icon: Icons.location_city,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
               ),
               activityIcon: CategoryIcon(
                 icon: Icons.directions_run,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
               ),
               objectIcon: CategoryIcon(
                 icon: Icons.lightbulb_outline,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
               ),
               symbolIcon: CategoryIcon(
                 icon: Icons.euro_symbol,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
               ),
               flagIcon: CategoryIcon(
                 icon: Icons.flag,
-                selectedColor: Colors.yellowAccent,
+                selectedColor: colorGold,
               ),
             ),
             enableRecommend: true,
