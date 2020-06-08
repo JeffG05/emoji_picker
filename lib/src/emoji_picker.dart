@@ -155,9 +155,6 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
   static const platform = const MethodChannel("emoji_picker");
   static const double CATEGORY_BUTTON_HEIGHT = 30;
 
-  //ValueNotifier<List<Widget>> pagesProvider = ValueNotifier<List<Widget>>([]);
-  //List<Widget> pages = <Widget>[];
-
   int recommendedPagesNum = 1;
   int recentPagesNum = 1;
   int smileyPagesNum = 1;
@@ -198,7 +195,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       selectedCategory = Category.SMILEYS;
     }
 
-    widget.recommendKeywords.addListener(_recommendChanged);
+    widget.recommendKeywords?.addListener(_recommendChanged);
 
     _createTabBar();
     updateEmojis().then((_) {
@@ -211,6 +208,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
   void dispose() {
     delayTimer?.cancel();
     _categoryTabController.dispose();
+    widget.recommendKeywords?.removeListener(_recommendChanged);
     super.dispose();
   }
 
