@@ -153,7 +153,6 @@ class Emoji {
 
 class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStateMixin {
   static const platform = const MethodChannel("emoji_picker");
-  static const double CATEGORY_BUTTON_HEIGHT = 34;
 
   int recommendedPagesNum = 1;
   int recentPagesNum = 1;
@@ -734,25 +733,17 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constrains) {
-        final fullWidth = MediaQuery.of(context).size.width;
-        final fullHeight = (MediaQuery.of(context).size.width / widget.columns) * widget.rows;
+    if (scrollableItems.isEmpty) {
+      return _loadingPage();
+    }
 
-        if (scrollableItems.isEmpty) {
-          return _loadingPage();
-        }
-        //print("page rebuild");
-        return Column(
-          children: <Widget>[
-            SizedBox(
-                height: min(fullHeight, constrains.maxHeight - CATEGORY_BUTTON_HEIGHT),
-                width: min(fullWidth, constrains.maxWidth),
-                child: scrollableMainPanel()),
-            _categoryButtons()
-          ],
-        );
-      },
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: scrollableMainPanel(),
+        ),
+        _categoryButtons()
+      ],
     );
   }
 
