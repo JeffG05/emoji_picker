@@ -337,31 +337,26 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
     switch (widget.buttonMode) {
       case ButtonMode.MATERIAL:
         return Center(
-            child: FlatButton(
-                padding: EdgeInsets.all(0),
+            child: GestureDetector(
                 child: Center(
                   child: Text(
                     emojiTxt,
                     style: TextStyle(fontSize: widget.iconSize),
                   ),
                 ),
-                onPressed: onSelected
-                //   widget.onEmojiSelected(emoji, selectedCategory);
-                // },
-                ));
+                onTap: onSelected));
         break;
       case ButtonMode.CUPERTINO:
         return Center(
-            child: CupertinoButton(
-          onPressed: onSelected,
+            child: GestureDetector(
+          onTap: onSelected,
           child: Container(
-            //pressedOpacity: 0.4,
             padding: EdgeInsets.all(0),
             color: widget.bgColor,
             child: Center(
               child: Text(
                 emojiTxt,
-                style: TextStyle(fontSize: 24),
+                style: TextStyle(fontSize: widget.iconSize),
               ),
             ),
             //onPressed: onSelected
