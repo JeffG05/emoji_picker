@@ -80,8 +80,10 @@ class MainPageState extends State<MainPage> {
         Container(
           height: 430,
           child: EmojiPicker(
-            rows: 3,
+            rows: 4,
             columns: 7,
+            iconSize: 20,
+            gridFactor: 1.5,
             bgColor: Colors.black,
             indicatorColor: Colors.white,
             buttonMode: ButtonMode.CUPERTINO,
