@@ -153,7 +153,7 @@ class Emoji {
 
 class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStateMixin {
   static const platform = const MethodChannel("emoji_picker");
-  static const double CATEGORY_BUTTON_HEIGHT = 30;
+  static const double CATEGORY_BUTTON_HEIGHT = 34;
 
   int recommendedPagesNum = 1;
   int recentPagesNum = 1;
