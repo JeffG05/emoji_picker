@@ -689,16 +689,9 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       return recentPage();
     }
 
-    if (pendingScrollIndex >= 0) {
-      final toIndex = pendingScrollIndex;
-      pendingScrollIndex = -1;
-      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-        scrollListController.scrollTo(index: toIndex, duration: Duration(milliseconds: 500));
-      });
-    }
-
     return ScrollablePositionedList.builder(
       key: Key("emoji_main"),
+      initialScrollIndex: max(0,pendingScrollIndex),
       itemCount: scrollableItems.length,
       itemScrollController: scrollListController,
       itemPositionsListener: itemPositionsListener,
@@ -728,7 +721,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
           ),
         );
       },
-    );
+    );    
   }
 
   @override
@@ -776,9 +769,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
             setState(() {});
             if ([Category.RECENT, Category.RECOMMENDED].contains(oldSelection) &&
                 [Category.RECENT, Category.RECOMMENDED].contains(newCategory) == false) {
-              if (newCategory != Category.SMILEYS) {
-                pendingScrollIndex = index;
-              }
+              pendingScrollIndex = index;
             }
           } else {
             scrollListController.scrollTo(index: index, duration: Duration(milliseconds: 500));
