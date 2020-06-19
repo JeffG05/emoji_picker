@@ -508,49 +508,81 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
       smileyPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(smileyMap, name: "emoji_smile"));
-    setState(() {});
+    if( mounted ){
+      setState(() {});
+    }else{
+      return;
+    }
 
     animalMap = await getEmojis(emojiList.animals, (items) {
       animalPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(animalMap, name: "emoji_animal"));
-    setState(() {});
+    if( mounted ){
+      setState(() {});
+    }else{
+      return;
+    }
 
     foodMap = await getEmojis(emojiList.foods, (items) {
       foodPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(foodMap, name: "emoji_food"));
-    setState(() {});
+    if( mounted ){
+      setState(() {});
+    }else{
+      return;
+    }
 
     travelMap = await getEmojis(emojiList.travel, (items) {
       travelPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(travelMap, name: "emoji_travel"));
-    setState(() {});
+    if( mounted ){
+      setState(() {});
+    }else{
+      return;
+    }
 
     activityMap = await getEmojis(emojiList.activities, (items) {
       activityPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(activityMap, name: "emoji_activity"));
-    setState(() {});
+    if( mounted ){
+      setState(() {});
+    }else{
+      return;
+    }
 
     objectMap = await getEmojis(emojiList.objects, (items) {
       objectPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(objectMap, name: "emoji_object"));
-    setState(() {});
+    if( mounted ){
+      setState(() {});
+    }else{
+      return;
+    }
 
     symbolMap = await getEmojis(emojiList.symbols, (items) {
       symbolPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(symbolMap, name: "emoji_symbol"));
-    setState(() {});
+    if( mounted ){
+      setState(() {});
+    }else{
+      return;
+    }
 
     flagMap = await getEmojis(emojiList.flags, (items) {
       flagPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(flagMap, name: "emojy_flag"));
-    setState(() {});
+    if( mounted ){
+      setState(() {});
+    }else{
+      return;
+    }
   }
 
   Widget _gridCategory(Map<String, String> itemMap, {String name}) {
