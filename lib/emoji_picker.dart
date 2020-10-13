@@ -27,6 +27,8 @@ enum Category {
   SYMBOLS,
   FLAGS
 }
+// const
+const double _kEmojiSize = 32;
 
 /// Enum to alter the keyboard button style
 enum ButtonMode {
@@ -49,7 +51,7 @@ typedef void OnEmojiSelected(Emoji emoji, Category category);
 /// There is also a bottombar which displays all the possible [Category] and allow the user to quickly switch to that [Category]
 class EmojiPicker extends StatefulWidget {
   @override
-  _EmojiPickerState createState() => new _EmojiPickerState();
+  EmojiPickerState createState() => new EmojiPickerState();
 
   /// Number of columns in keyboard grid
   int columns;
@@ -130,11 +132,11 @@ class EmojiPicker extends StatefulWidget {
     }
 
     if (this.noRecommendationsStyle == null) {
-      noRecommendationsStyle = TextStyle(fontSize: 20, color: Colors.black26);
+      noRecommendationsStyle = TextStyle(fontSize: _kEmojiSize, color: Colors.black26);
     }
 
     if (this.noRecentsStyle == null) {
-      noRecentsStyle = TextStyle(fontSize: 20, color: Colors.black26);
+      noRecentsStyle = TextStyle(fontSize: _kEmojiSize, color: Colors.black26);
     }
 
     if (this.bgColor == null) {
@@ -280,7 +282,7 @@ class Emoji {
   }
 }
 
-class _EmojiPickerState extends State<EmojiPicker> {
+class EmojiPickerState extends State<EmojiPicker> {
   static const platform = const MethodChannel("emoji_picker");
 
   List<Widget> pages = new List();
@@ -560,9 +562,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
                         child: Center(
                           child: Text(
                             recommendedEmojis[
-                                    index + (widget.columns * widget.rows * i)]
+                            index + (widget.columns * widget.rows * i)]
                                 .emoji,
-                            style: TextStyle(fontSize: 24),
+                            style: TextStyle(fontSize: _kEmojiSize),
                           ),
                         ),
                         onPressed: () {
@@ -589,7 +591,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                             recommendedEmojis[
                                     index + (widget.columns * widget.rows * i)]
                                 .emoji,
-                            style: TextStyle(fontSize: 24),
+                            style: TextStyle(fontSize: _kEmojiSize),
                           ),
                         ),
                         onPressed: () {
@@ -660,9 +662,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         emojiTxt,
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -682,9 +684,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     pressedOpacity: 0.4,
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         emojiTxt,
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -731,10 +733,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         animalMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -754,10 +756,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     pressedOpacity: 0.4,
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         animalMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -805,10 +807,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         foodMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -828,10 +830,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     pressedOpacity: 0.4,
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         foodMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -879,10 +881,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         travelMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -902,10 +904,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     pressedOpacity: 0.4,
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         travelMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -956,10 +958,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         activityMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -979,9 +981,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     pressedOpacity: 0.4,
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         emojiTxt,
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -1029,10 +1031,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         objectMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -1052,10 +1054,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     pressedOpacity: 0.4,
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         objectMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -1103,10 +1105,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         symbolMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -1126,10 +1128,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     pressedOpacity: 0.4,
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         symbolMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -1177,10 +1179,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: FlatButton(
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         flagMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -1200,10 +1202,10 @@ class _EmojiPickerState extends State<EmojiPicker> {
                     pressedOpacity: 0.4,
                     padding: EdgeInsets.all(0),
                     child: Center(
-                      child: Text(
+                      child: _wrapTextEmoji(
                         flagMap.values.toList()[
                             index + (widget.columns * widget.rows * i)],
-                        style: TextStyle(fontSize: 24),
+                        style: TextStyle(fontSize: _kEmojiSize),
                       ),
                     ),
                     onPressed: () {
@@ -1246,7 +1248,22 @@ class _EmojiPickerState extends State<EmojiPicker> {
       if (mounted) setState(() {});
     });
   }
-
+  Widget _wrapTextEmoji(String text, {TextStyle style}) {
+    return Stack(
+      children: [
+        Text(text, style: style),
+        Positioned(
+          right: 0,
+          bottom: 0,
+          child: CircleAvatar(
+            radius: 8,
+            backgroundColor: Colors.lightBlue,
+            child: Icon(Icons.add, color: Colors.white, size: 16),
+          ),
+        )
+      ],
+    );
+  }
   Widget recentPage() {
     if (recentEmojis.length != 0) {
       return Container(
@@ -1265,7 +1282,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: Center(
                         child: Text(
                           allEmojis[allNames.indexOf(recentEmojis[index])],
-                          style: TextStyle(fontSize: 24),
+                          style: TextStyle(fontSize: _kEmojiSize),
                         ),
                       ),
                       onPressed: () {
@@ -1286,7 +1303,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       child: Center(
                         child: Text(
                           allEmojis[allNames.indexOf(recentEmojis[index])],
-                          style: TextStyle(fontSize: 24),
+                          style: TextStyle(fontSize: _kEmojiSize),
                         ),
                       ),
                       onPressed: () {
@@ -1420,7 +1437,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                 widget.rows,
             width: MediaQuery.of(context).size.width,
             child: PageView(
-                children: pages,
+                children:pages,
                 controller: pageController,
                 onPageChanged: (index) {
                   if (widget.recommendKeywords != null &&
