@@ -318,6 +318,11 @@ class _EmojiPickerState extends State<EmojiPicker> {
     });
   }
 
+  void _selectEmoji(Emoji emoji, Category category) {
+    widget.onEmojiSelected(emoji, category);
+    addRecentEmoji(emoji);
+  }
+
   Future<bool> _isEmojiAvailable(String emoji) async {
     if (Platform.isAndroid) {
       bool isAvailable;
@@ -362,6 +367,9 @@ class _EmojiPickerState extends State<EmojiPicker> {
     getRecentEmojis().then((_) {
       print("adding emoji");
       setState(() {
+        if (recentEmojis.contains(emoji.name)) {
+          recentEmojis.remove(emoji.name);
+        }
         recentEmojis.insert(0, emoji.name);
         prefs.setStringList(key, recentEmojis);
       });
@@ -568,7 +576,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                         onPressed: () {
                           _Recommended recommended = recommendedEmojis[
                               index + (widget.columns * widget.rows * i)];
-                          widget.onEmojiSelected(
+                          _selectEmoji(
                               Emoji(
                                   name: recommended.name,
                                   emoji: recommended.emoji),
@@ -595,7 +603,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                         onPressed: () {
                           _Recommended recommended = recommendedEmojis[
                               index + (widget.columns * widget.rows * i)];
-                          widget.onEmojiSelected(
+                          _selectEmoji(
                               Emoji(
                                   name: recommended.name,
                                   emoji: recommended.emoji),
@@ -666,7 +674,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: smileyMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -688,7 +696,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: smileyMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -738,7 +746,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: animalMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -761,7 +769,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: animalMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -812,7 +820,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: foodMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -835,7 +843,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: foodMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -886,7 +894,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: travelMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -909,7 +917,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: travelMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -963,7 +971,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: activityMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -985,7 +993,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: activityMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -1036,7 +1044,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: objectMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -1059,7 +1067,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: objectMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -1110,7 +1118,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: symbolMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -1133,7 +1141,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: symbolMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -1184,7 +1192,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: flagMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -1207,7 +1215,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                     ),
                     onPressed: () {
-                      widget.onEmojiSelected(
+                      _selectEmoji(
                           Emoji(
                               name: flagMap.keys.toList()[
                                   index + (widget.columns * widget.rows * i)],
@@ -1270,7 +1278,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                       onPressed: () {
                         String emojiName = recentEmojis[index];
-                        widget.onEmojiSelected(
+                        _selectEmoji(
                             Emoji(
                                 name: emojiName,
                                 emoji: allEmojis[allNames.indexOf(emojiName)]),
@@ -1291,7 +1299,7 @@ class _EmojiPickerState extends State<EmojiPicker> {
                       ),
                       onPressed: () {
                         String emojiName = recentEmojis[index];
-                        widget.onEmojiSelected(
+                        _selectEmoji(
                             Emoji(
                                 name: emojiName,
                                 emoji: allEmojis[allNames.indexOf(emojiName)]),
@@ -2225,7 +2233,8 @@ class _EmojiPickerState extends State<EmojiPicker> {
               color: widget.bgColor,
               child: Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(widget.progressIndicatorColor),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      widget.progressIndicatorColor),
                 ),
               ),
             ),
