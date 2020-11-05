@@ -29,6 +29,8 @@ enum ButtonMode {
 /// The function returns the selected [Emoji] as well as the [Category] from which it originated
 typedef void OnEmojiSelected(Emoji emoji, Category category);
 
+final Map<String, Map<String, String>> _emojiPack = {};
+
 /// The Emoji Keyboard widget
 ///
 /// This widget displays a grid of [Emoji] sorted by [Category] which the user can horizontally scroll through.
@@ -319,16 +321,21 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
     });
   }
 
-  Future<Map<String, String>> getAvailableEmojis(Map<String, String> map) async {
-    Map<String, String> newMap = Map<String, String>();
+  Future<Map<String, String>> getAvailableEmojis(Map<String, String> map, String name) async {
+    final cachedMap = _emojiPack[name];
+    if (cachedMap != null && cachedMap.isNotEmpty) {
+      // print('cached emoji $name ${map.length}');
+      return cachedMap;
+    }
 
+    Map<String, String> newMap = Map<String, String>();
     for (String key in map.keys) {
       bool isAvailable = await _isEmojiAvailable(map[key]);
       if (isAvailable) {
         newMap[key] = map[key];
       }
     }
-
+    _emojiPack[name] = newMap;
     return newMap;
   }
 
@@ -365,15 +372,16 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
         ));
         break;
       default:
-        return Container();
+        return Container(color: Colors.brown);
     }
   }
 
   Future<Map<String, String>> getEmojis(
     Map<String, String> defines,
+    String name,
     Function(List<Widget>) items,
   ) async {
-    final avalidMap = await getAvailableEmojis(defines);
+    final avalidMap = await getAvailableEmojis(defines, name);
     allNames.addAll(avalidMap.keys);
     allEmojis.addAll(avalidMap.values);
 
@@ -491,7 +499,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
   Future updateEmojis() async {
     if (widget.enableRecommend) {
       //final recommendedPages =  _getRecommentPages(null);
-      scrollableItems.add(Container());
+      scrollableItems.add(Container(color: Colors.black));
     } else {
       recommendedPagesNum = 0;
     }
@@ -499,88 +507,88 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
     if (widget.enableRecent) {
       recentPagesNum = 1;
       getRecentEmojis();
-      scrollableItems.add(Container());
+      scrollableItems.add(Container(color: Colors.pink));
     } else {
       recentPagesNum = 0;
     }
 
-    smileyMap = await getEmojis(emojiList.smileys, (items) {
+    smileyMap = await getEmojis(emojiList.smileys, "emoji_smile", (items) {
       smileyPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(smileyMap, name: "emoji_smile"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
-    animalMap = await getEmojis(emojiList.animals, (items) {
+    animalMap = await getEmojis(emojiList.animals, "emoji_animal", (items) {
       animalPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(animalMap, name: "emoji_animal"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
-    foodMap = await getEmojis(emojiList.foods, (items) {
+    foodMap = await getEmojis(emojiList.foods, "emoji_food", (items) {
       foodPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(foodMap, name: "emoji_food"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
-    travelMap = await getEmojis(emojiList.travel, (items) {
+    travelMap = await getEmojis(emojiList.travel, "emoji_travel", (items) {
       travelPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(travelMap, name: "emoji_travel"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
-    activityMap = await getEmojis(emojiList.activities, (items) {
+    activityMap = await getEmojis(emojiList.activities, "emoji_activity", (items) {
       activityPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(activityMap, name: "emoji_activity"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
-    objectMap = await getEmojis(emojiList.objects, (items) {
+    objectMap = await getEmojis(emojiList.objects, "emoji_object", (items) {
       objectPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(objectMap, name: "emoji_object"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
-    symbolMap = await getEmojis(emojiList.symbols, (items) {
+    symbolMap = await getEmojis(emojiList.symbols, "emoji_symbol", (items) {
       symbolPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(symbolMap, name: "emoji_symbol"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
 
-    flagMap = await getEmojis(emojiList.flags, (items) {
+    flagMap = await getEmojis(emojiList.flags, "emojy_flag", (items) {
       flagPagesNum = items.length;
     });
     scrollableItems.add(_gridCategory(flagMap, name: "emojy_flag"));
-    if( mounted ){
+    if (mounted) {
       setState(() {});
-    }else{
+    } else {
       return;
     }
   }
@@ -588,6 +596,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
   Widget _gridCategory(Map<String, String> itemMap, {String name}) {
     final items = itemMap.values.toList();
     final keyList = itemMap.keys.toList();
+
     return Container(
       key: name != null ? Key(name) : null,
       color: widget.bgColor,
@@ -603,6 +612,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
             addRecentEmoji(emoji);
           });
         }),
+        padding: EdgeInsets.zero,
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         crossAxisCount: widget.columns,
@@ -723,7 +733,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
     return ScrollablePositionedList.builder(
       key: Key("emoji_main"),
-      initialScrollIndex: max(0,pendingScrollIndex),
+      initialScrollIndex: max(0, pendingScrollIndex),
       itemCount: scrollableItems.length,
       itemScrollController: scrollListController,
       itemPositionsListener: itemPositionsListener,
@@ -734,6 +744,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
         return Container(
           color: widget.bgColor,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Row(
                 children: <Widget>[
@@ -743,7 +754,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
                   ),
                   Icon(
                     widget.categoryIcons[_categoryList[index]].icon,
-                    color: Colors.white,
+                    color: Colors.grey,
                   ),
                   Expanded(flex: 8, child: Divider(color: Colors.grey)),
                 ],
@@ -753,7 +764,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
           ),
         );
       },
-    );    
+    );
   }
 
   @override
