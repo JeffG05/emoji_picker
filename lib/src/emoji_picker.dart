@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'dart:math';
@@ -137,6 +136,8 @@ class _Recommended {
 
 /// A class to store data for each individual emoji
 class Emoji {
+  static const platform = const MethodChannel("emoji_picker");
+
   /// The name or description for this emoji
   final String name;
 
@@ -151,11 +152,23 @@ class Emoji {
   String toString() {
     return "Name: " + name + ", Emoji: " + emoji;
   }
+
+  static Future<bool> isEmojiAvailable(String emoji) async {
+    if (Platform.isAndroid) {
+      bool isAvailable;
+      try {
+        isAvailable = await platform.invokeMethod("isAvailable", {"emoji": emoji});
+      } on PlatformException catch (_) {
+        isAvailable = false;
+      }
+      return isAvailable;
+    } else {
+      return true;
+    }
+  }
 }
 
 class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStateMixin {
-  static const platform = const MethodChannel("emoji_picker");
-
   int recommendedPagesNum = 1;
   int recentPagesNum = 1;
   int smileyPagesNum = 1;
@@ -284,18 +297,8 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
     );
   }
 
-  Future<bool> _isEmojiAvailable(String emoji) async {
-    if (Platform.isAndroid) {
-      bool isAvailable;
-      try {
-        isAvailable = await platform.invokeMethod("isAvailable", {"emoji": emoji});
-      } on PlatformException catch (_) {
-        isAvailable = false;
-      }
-      return isAvailable;
-    } else {
-      return true;
-    }
+  Future<bool> _isEmojiAvailable(String emoji) {
+    return Emoji.isEmojiAvailable(emoji);
   }
 
   Future<List<String>> getRecentEmojis() async {
@@ -330,7 +333,7 @@ class _EmojiPickerState extends State<EmojiPicker> with SingleTickerProviderStat
 
     Map<String, String> newMap = Map<String, String>();
     for (String key in map.keys) {
-      bool isAvailable = await _isEmojiAvailable(map[key]);
+      bool isAvailable = await Emoji.isEmojiAvailable(map[key]);
       if (isAvailable) {
         newMap[key] = map[key];
       }
