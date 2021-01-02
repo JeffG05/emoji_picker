@@ -310,6 +310,11 @@ class _EmojiPickerState extends State<EmojiPicker> {
   bool loaded = false;
 
   @override
+  void setState(fn) {
+    if(mounted) super.setState(fn);
+  }
+
+  @override
   void initState() {
     super.initState();
 

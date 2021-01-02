@@ -1,3 +1,6 @@
+## [0.1.1] - 02/01/2021
+* setState mounted fix
+
 ## [0.1.0] - 09/01/2020
 * Added documentation
 
