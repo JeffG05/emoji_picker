@@ -32,8 +32,6 @@ class MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return EmojiPicker(
       rows: 3,
       columns: 7,
