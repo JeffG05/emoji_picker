@@ -1,3 +1,5 @@
+*This project is no longer being actively maintained. Feel free to fork the repository and continue development.*
+
 # Flutter Emoji Keyboard
 
 [![pub package](https://img.shields.io/pub/v/emoji_picker.svg)](https://pub.dartlang.org/packages/emoji_picker)
