@@ -39,7 +39,7 @@ class MainPageState extends State<MainPage> {
       recommendKeywords: ["racing", "horse"],
       numRecommended: 10,
       onEmojiSelected: (emoji, category) {
-        print(emoji);
+        print("onEmojiSelected: $emoji");
       },
     );
 
