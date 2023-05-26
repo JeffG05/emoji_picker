@@ -1,7 +1,9 @@
 name: emoji_picker
 description: A Flutter package that provides an Emoji Keyboard widget with 390 emojis in 8 categories.
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/JeffG05/emoji_picker
+authors:
+  - Onat Cipli <ciplionat35@gmail.com>
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
